@@ -72,7 +72,7 @@ const states = [
 const getRechargeSetting = props => {
   const [dateRange, setDateRange] = useState({
     hasRadio: '',
-    date: [],
+    date: [moment(),moment()],
   });
   const { dispatch, form, loadingState } = props;
   const changeDateType = dateRange => {

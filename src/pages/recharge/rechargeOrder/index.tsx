@@ -23,7 +23,7 @@ const Settlement = props => {
   const actionRef = useRef<ActionType>();
   const [dateRange, setDateRange] = useState({
     hasRadio: '',
-    date: [],
+    date: [moment(),moment()],
   });
   const { dispatch, common } = props;
   const changeDateType = dateRange => {

@@ -66,6 +66,18 @@ export default [
         path: 'tradeReport',
         name: '平台报表',
       },
+      {
+        path: 'channelTradeReport',
+        name: '通道报表',
+      },
+      {
+        path: 'merchantTradeReport',
+        name: '商户报表',
+      },
+      {
+        path: 'userTradeReport',
+        name: '用户报表',
+      },
     ]
   },
   {

@@ -1,5 +1,5 @@
 import { connect } from 'dva';
-import React, { useRef,useState,useEffect} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from './data';
 import { BeforeCurrentDateComponent } from '@/components/DateComponent';
@@ -12,64 +12,92 @@ const Agent = props => {
   const actionRef = useRef<ActionType>();
   const [dateRange, setDateRange] = useState({
     hasRadio: '',
-    date: [moment(),moment()],
+    date: [moment(), moment().add(1, 'day')],
   });
-  const { dispatch, common } = props;
+  const [total, setTotal] = useState(0);
+  const { dispatch } = props;
   const changeDateType = dateRange => {
     setDateRange(dateRange);
   };
   const columns: ProColumns<TableListItem>[] = [
     {
-      title: '用户',
-      dataIndex: 'userName',
+      title: '商户',
+      dataIndex: 'merchantName',
       align: 'center',
+      hideInSearch: true,
     },
     {
-      title: 'ip地址',
-      dataIndex: 'ipAddr',
+      title: '交易金额',
+      dataIndex: 'paidAmount',
       align: 'center',
+      hideInSearch: true,
     },
     {
-      title: '地点',
-      dataIndex: 'loginLocation',
+      title: '手续费',
+      dataIndex: 'poundage',
       align: 'center',
-      hideInSearch:true,
+      hideInSearch: true,
     },
     {
-      title: '账号密钥',
-      dataIndex: 'secretKey',
+      title: '代理返点',
+      dataIndex: 'rebateAmount',
       align: 'center',
-      width:'150',
-      ellipsis:true,
-      hideInSearch:true,
+      hideInSearch: true,
     },
     {
-      title: '微信收款人',
-      dataIndex: 'wechatPayee',
+      title: '商户实收',
+      dataIndex: 'paidAmount-poundage',
       align: 'center',
-      hideInSearch:true,
+      hideInSearch: true,
     },
     {
-      title: '支付宝收款人',
-      dataIndex: 'alipayPayee',
+      title: '已支付订单量',
+      dataIndex: 'paidOrderNum',
       align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '订单量',
+      dataIndex: 'orderNum',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '下发金额',
+      dataIndex: 'withdrawAmount',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '下发手续费',
+      dataIndex: 'withdrawPoundage',
+      align: 'center',
+      hideInSearch: true,
+    },
 
-      hideInSearch:true,
-    },
     {
-      title: '创建时间',
-      dataIndex: 'createTime',
+      title: '补单金额',
+      dataIndex: 'manualAmount',
       align: 'center',
-      hideInSearch:true,
+      hideInSearch: true,
     },
     {
-      title: '最后心跳时间',
-      dataIndex: 'lastHeartbeatTime',
+      title: '可提现金额',
+      dataIndex: 'withdrawableAmount',
       align: 'center',
-      hideInSearch:true,
+      hideInSearch: true,
     },
     {
-      title: '最后心跳时间',
+      title: '成功率',
+      dataIndex: 'successRate',
+      align: 'center',
+      hideInSearch: true,
+      render: item => {
+        return `${item}%`;
+      },
+    },
+    {
+      title: '日期',
       dataIndex: 'dateRange',
       align: 'center',
       hideInTable: true,
@@ -84,26 +112,38 @@ const Agent = props => {
       },
     },
   ];
-
   const getDatas = params => {
     if (!params.dateRange) {
-      params.startTime = moment().format(constant.YYYY_MM_DD);
-      params.endTime = moment().format(constant.YYYY_MM_DD);
+      params.beginDate = moment().format(constant.YYYY_MM_DD);
+      params.endDate = moment()
+        .add(1, 'day')
+        .format(constant.YYYY_MM_DD);
     } else {
-      params.startTime = moment(params.dateRange[0]).format(constant.YYYY_MM_DD);
-      params.endTime = moment(params.dateRange[1]).format(constant.YYYY_MM_DD);
+      params.beginDate = moment(params.dateRange[0]).format(constant.YYYY_MM_DD);
+      params.endDate = moment(params.dateRange[1])
+        .add(1, 'day')
+        .format(constant.YYYY_MM_DD);
     }
     return dispatch({
-      type: 'heartbeatLog/list',
+      type: 'merchantTradeReport/list',
       payload: { params },
-    }).then(data => data.data);
+    }).then(data => {
+      let sum = data.data.statistics.sum || {};
+      data.data.data.push({ ...sum, merchantName: '总计' });
+      setTotal(data.data.statistics.withdrawableAmount);
+      return data.data;
+    });
   };
   return (
     <PageHeaderWrapper title={false}>
       <ProTable<TableListItem>
-        rowKey="id"
+        rowKey="merchantId"
         actionRef={actionRef}
-        headerTitle="监控APP心跳日记"
+        headerTitle={
+          <>
+            商户报表
+          </>
+        }
         request={params => {
           const { current: pageNum, pageSize, ...rest } = params;
           params = { pageNum, pageSize, ...rest };
@@ -129,7 +169,7 @@ const Agent = props => {
   );
 };
 export default connect(({ loading, user, common }: ConnectState) => ({
-  loadingState: loading.models.channel,
+  loadingState: loading.models.tradeReport,
   user,
   common,
 }))(Agent);

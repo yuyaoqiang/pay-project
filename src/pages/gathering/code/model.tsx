@@ -39,6 +39,9 @@ const Model: ModelType = {
     *del({ payload }, { call, put }) {
       return yield call(Serivce.del, payload.params);
     },
+    *restoreGatheringCodeById({ payload }, { call, put }) {
+      return yield call(Serivce.restoreGatheringCodeById, payload.params);
+    },
   },
 
   reducers: {},

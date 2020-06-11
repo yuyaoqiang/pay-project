@@ -68,10 +68,10 @@ export const FasterOptDateComponent = props => {
 
 // 只能选择当前日期及当前日期之前的
 export const BeforeCurrentDateComponent = props => {
-  const { self } = props;
+  const { self ,dateRange} = props;
   return (
     <RangePicker
-      value={self.value}
+      value={self.value||dateRange.date}
       disabledDate={disabledDate}
       onChange={date => {
         self.onChange(date);

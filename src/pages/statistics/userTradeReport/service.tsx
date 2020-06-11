@@ -4,7 +4,7 @@ import Debounce from 'lodash-decorators/debounce';
 class Service {
   @Debounce(constant.DEBOUNCE_TIME, { leading: true })
   static list(params) {
-    return request.get('/userAccount/findAccountChangeLogByPage', {
+    return request.get('/statisticalAnalysis/findUserTradeReport', {
       params,
     });
   }

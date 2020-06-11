@@ -10,11 +10,12 @@ import InsertModityComponent from './components/InsertModityComponent';
 import InfoComponent from './components/InfoComponent';
 import { helpers, utils } from '@/utils';
 import _ from 'lodash';
+import moment from 'moment';
 import styles from './style.less';
 const MerchantOrder = props => {
   const [dateRange, setDateRange] = useState({
     hasRadio: '',
-    date: [],
+    date: [moment(), moment()],
   });
 
   const [reloadding, setReloadding] = useState<boolean>(false);
@@ -62,7 +63,7 @@ const MerchantOrder = props => {
       align: 'center',
       render: (item, rcord: any) => {
         return (
-          <a
+          <Button
             type="link"
             onClick={() => {
               getRcord(rcord);
@@ -72,7 +73,7 @@ const MerchantOrder = props => {
             <p className={styles.mg0}>{rcord.orderNo}</p>
             <p className={styles.mg0}> {rcord.merchantName}</p>
             <p className={styles.mg0}>{rcord.payInfo && rcord.payInfo.orderNo}</p>
-          </a>
+          </Button>
         );
       },
     },
@@ -266,15 +267,15 @@ const MerchantOrder = props => {
       hideInSearch: true,
       dataIndex: 'payInfo.noticeState',
       width: 120,
-      valueEnum: utils.getValueEnum(common.payNoticeState, list => {
-        return list.map(m => {
-          return {
-            type: m.dictItemCode,
-            name: m.dictItemName,
-            status: m.dictItemCode == 2 ? true : false,
-          };
+      render: (item, record:any) => {
+        let reslut = { dictItemName: '' };
+        common.payNoticeState.map(m => {
+          if (m.dictItemCode == record.payInfo.noticeState) {
+            reslut = m;
+          }
         });
-      }),
+        return reslut.dictItemName;
+      },
     },
     {
       title: '提交时间',
@@ -342,7 +343,7 @@ const MerchantOrder = props => {
   };
 
   const resendNotice = id => {
-     dispatch({
+    dispatch({
       type: 'merchantOrder/resendNotice',
       payload: { params: { id } },
     })
@@ -375,7 +376,6 @@ const MerchantOrder = props => {
   };
   return (
     <>
-      {helpers.isJudge(reloadding)(<Spin></Spin>, null)}
       <PageHeaderWrapper title={false}>
         <ProTable<TableListItem>
           rowKey="id"
@@ -441,7 +441,6 @@ const MerchantOrder = props => {
           />
         )}
       </PageHeaderWrapper>
-      ,
     </>
   );
 };

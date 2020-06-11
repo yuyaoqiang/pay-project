@@ -1,13 +1,13 @@
 import { extend } from 'umi-request';
-import { message, Modal } from 'antd';
+import connect from 'dva';
+import { message } from 'antd';
 import { helpers, constant } from './index';
 import router from 'umi/router';
 import moment from 'moment';
 
-// 弹框是否存在
-let hasModalMessage = false;
+
 const request = extend({
-  prefix: helpers.isJudge(ENVIRONMENT === 'dev')('/api/', ''),
+  prefix: helpers.isJudge(ENVIRONMENT === 'dev')('/api/', '/api/'),
   // prefix: '/api/',
   timeout: 12000,
   credentials: 'include',
@@ -34,6 +34,7 @@ request.interceptors.response.use(async response => {
     return response;
   }
   if (data && data.code === 400) {
+    debugger
     message.error(data.msg);
     return Promise.reject(response);
   }
@@ -42,7 +43,6 @@ request.interceptors.response.use(async response => {
     return Promise.reject(response);
   }
   if (data && data.code === 500) {
-    message.error(data.msg);
     return Promise.reject(response);
   }
   if (data && data.code === 999) {
@@ -50,7 +50,8 @@ request.interceptors.response.use(async response => {
     router.push("/user/login")
     return Promise.reject(response);
   }
-  message.error(data.msg);
+  console.log(connect)
+  message.error(data.message);
   return Promise.reject(response);
 });
 

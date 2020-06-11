@@ -7,34 +7,51 @@ import _ from 'lodash';
 import { helpers } from '@/utils';
 
 const ContentCompoent: React.FC<ModalFormProps> = props => {
+  const [rejectLoading, setRejectLoading] = useState(false);
+  const [resovleLoading, setResovleLoading] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
   const { modalVisible, form, dispatch, onCancel, defulat = {} } = props;
   const { actionRef } = props;
-  const addForm = [
-    {
-      type: 'textarea',
-      label: '备注说明',
-      key: 'note',
-      disabled: true,
-      validator: validator.onlyRequier,
-      defulatVal: defulat.note,
-      placeholder: '请输入备注说明',
-    },
-  ];
+  const confirmToPaid = () => {
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      setConfirmLoading(true);
+      fieldsValue.appealId = defulat.id;
+      Modal.confirm({
+        title: '提示',
+        content: `确认已支付吗？`,
+        onOk: () => {
+          dispatch({
+            type: 'appealRecord/confirmToPaid',
+            payload: { params: { ...fieldsValue } },
+          }).then(data => {
+            message.success('操作成功');
+            setConfirmLoading(false);
+            actionRef.current?.reload();
+            onCancel();
+          });
+        },
+      });
+    });
+  };
 
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
-      fieldsValue.id = defulat.id;
+      setResovleLoading(true);
+      fieldsValue.appealId = defulat.id;
       Modal.confirm({
         title: '提示',
         content: `确认要通过审核吗？`,
         onOk: () => {
           dispatch({
-            type: 'settlement/settlementApproved',
+            type: 'appealRecord/alterToActualPayAmount',
             payload: { params: { ...fieldsValue } },
           }).then(data => {
             message.success('操作成功');
+            setResovleLoading(false);
             actionRef.current?.reload();
+            onCancel();
           });
         },
       });
@@ -44,17 +61,20 @@ const ContentCompoent: React.FC<ModalFormProps> = props => {
   const rejectHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
-      fieldsValue.id = defulat.id;
+      setRejectLoading(true);
+      fieldsValue.appealId = defulat.id;
       Modal.confirm({
         title: '提示',
         content: `确定审核不通过吗`,
         onOk: () => {
           dispatch({
-            type: 'settlement/settlementNotApproved',
+            type: 'appealRecord/cancelOrder',
             payload: { params: { ...fieldsValue } },
           }).then(data => {
             message.success('操作成功');
             actionRef.current?.reload();
+            setRejectLoading(false);
+            onCancel();
           });
         },
       });
@@ -66,7 +86,9 @@ const ContentCompoent: React.FC<ModalFormProps> = props => {
       destroyOnClose
       title={'申诉详情'}
       visible={modalVisible}
-      onOk={okHandle}
+      onOk={() => {
+        onCancel();
+      }}
       onCancel={() => {
         onCancel();
       }}
@@ -197,9 +219,10 @@ const ContentCompoent: React.FC<ModalFormProps> = props => {
         {helpers.isJudge(defulat.state == '1' && defulat.appealType == '3')(
           <Button
             style={{ marginRight: 5 }}
+            loading={confirmLoading}
             type={'primary'}
             onClick={() => {
-              okHandle();
+              confirmToPaid();
             }}
           >
             确认已支付
@@ -212,6 +235,7 @@ const ContentCompoent: React.FC<ModalFormProps> = props => {
           <Button
             style={{ marginRight: 5 }}
             type={'primary'}
+            loading={resovleLoading}
             onClick={() => {
               okHandle();
             }}
@@ -229,9 +253,10 @@ const ContentCompoent: React.FC<ModalFormProps> = props => {
         )(
           <Button
             style={{ marginRight: 5 }}
-            type={"danger"}
+            loading={rejectLoading}
+            type={'danger'}
             onClick={() => {
-              okHandle();
+              rejectHandle();
             }}
           >
             取消订单

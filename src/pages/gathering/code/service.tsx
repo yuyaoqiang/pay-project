@@ -33,5 +33,11 @@ class Service {
       params,
     });
   }
+  @Debounce(constant.DEBOUNCE_TIME, { leading: true })
+  static restoreGatheringCodeById(params) {
+    return request.get('/gatheringCode/restoreGatheringCodeById', {
+      params,
+    });
+  }
 }
 export default Service;

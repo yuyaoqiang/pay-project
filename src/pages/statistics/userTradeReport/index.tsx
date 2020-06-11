@@ -14,15 +14,49 @@ const Agent = props => {
     hasRadio: '',
     date: [moment(), moment().add(1, 'day')],
   });
-  const [total, setTotal] = useState(0);
   const { dispatch } = props;
   const changeDateType = dateRange => {
     setDateRange(dateRange);
   };
   const columns: ProColumns<TableListItem>[] = [
     {
-      title: '日期',
-      dataIndex: 'reportDate',
+      title: '查询范围',
+      dataIndex: 'queryScope',
+      align: 'center',
+      hideInTable: true,
+      valueEnum: {
+        all: { text: '全部' },
+        '20': { text: '指定账号及直接下级' },
+        '30': { text: '指定账号' },
+      },
+    },
+    {
+      title: '查询账号',
+      dataIndex: 'userName',
+      align: 'center',
+      hideInTable: true,
+    },
+    {
+      title: '账号',
+      dataIndex: 'userName',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '级别',
+      dataIndex: 'accountLevel',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '类型',
+      dataIndex: 'userType',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '充值金额',
+      dataIndex: 'rechargeAmount',
       align: 'center',
       hideInSearch: true,
     },
@@ -33,8 +67,8 @@ const Agent = props => {
       hideInSearch: true,
     },
     {
-      title: '手续费',
-      dataIndex: 'poundage',
+      title: '奖励金',
+      dataIndex: 'bounty',
       align: 'center',
       hideInSearch: true,
     },
@@ -57,29 +91,23 @@ const Agent = props => {
       hideInSearch: true,
     },
     {
-      title: '下发金额',
-      dataIndex: 'withdrawAmount',
+      title: '补单金额',
+      dataIndex: 'manualAmount',
       align: 'center',
       hideInSearch: true,
     },
-    {
-      title: '下发手续费',
-      dataIndex: 'withdrawPoundage',
-      align: 'center',
-      hideInSearch: true,
-    },
-    {
-      title: '奖励金',
-      dataIndex: 'bounty',
-      align: 'center',
-      hideInSearch: true,
-    },
-    {
-      title: '代理佣金',
-      dataIndex: 'userRebateAmount',
-      align: 'center',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '手动上分金额',
+    //   dataIndex: 'addCashDeposit',
+    //   align: 'center',
+    //   hideInSearch: true,
+    // },
+    // {
+    //   title: '手动下分金额',
+    //   dataIndex: 'minusCashDeposit',
+    //   align: 'center',
+    //   hideInSearch: true,
+    // },
     {
       title: '成功率',
       dataIndex: 'successRate',
@@ -88,12 +116,6 @@ const Agent = props => {
       render: item => {
         return `${item}%`;
       },
-    },
-    {
-      title: '平台利润',
-      dataIndex: 'profitAmount',
-      align: 'center',
-      hideInSearch: true,
     },
     {
       title: '日期',
@@ -124,25 +146,20 @@ const Agent = props => {
         .format(constant.YYYY_MM_DD);
     }
     return dispatch({
-      type: 'tradeReport/list',
+      type: 'userTradeReport/list',
       payload: { params },
     }).then(data => {
       let sum = data.data.statistics.sum || {};
-      data.data.data.push({ ...sum, reportDate: '总计' });
-      setTotal(data.data.statistics.withdrawableAmount);
+      data.data.data.push({ ...sum, userName: '总计' });
       return data.data;
     });
   };
   return (
     <PageHeaderWrapper title={false}>
       <ProTable<TableListItem>
-        rowKey="id"
+        rowKey="userId"
         actionRef={actionRef}
-        headerTitle={
-          <>
-            平台报表
-          </>
-        }
+        headerTitle={<>码商报表</>}
         request={params => {
           const { current: pageNum, pageSize, ...rest } = params;
           params = { pageNum, pageSize, ...rest };

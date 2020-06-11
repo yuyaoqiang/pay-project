@@ -8,6 +8,21 @@ class Service {
       params,
     });
   }
+  static alterToActualPayAmount(params) {
+    return request.get('/appeal/alterToActualPayAmount', {
+      params,
+    });
+  }
+  static cancelOrder(params) {
+    return request.get('/appeal/cancelOrder', {
+      params,
+    });
+  }
+  static confirmToPaid(params) {
+    return request.get('/appeal/confirmToPaid', {
+      params,
+    });
+  }
   @Debounce(constant.DEBOUNCE_TIME, { leading: true })
   static add(params) {
     return request.post('/merchant/addMerchant', {

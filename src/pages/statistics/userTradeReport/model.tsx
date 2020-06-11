@@ -19,7 +19,7 @@ export interface ModelType {
 const initState = {};
 
 const Model: ModelType = {
-  namespace: 'appealRecord',
+  namespace: 'userTradeReport',
 
   state: initState,
 
@@ -27,17 +27,11 @@ const Model: ModelType = {
     *list({ payload }, { call, put }) {
       return yield call(Serivce.list, payload.params);
     },
-    *alterToActualPayAmount({ payload }, { call, put }) {
-      return yield call(Serivce.alterToActualPayAmount, payload.params);
-    },
-    *confirmToPaid({ payload }, { call, put }) {
-      return yield call(Serivce.confirmToPaid, payload.params);
-    },
-    *cancelOrder({ payload }, { call, put }) {
-      return yield call(Serivce.cancelOrder, payload.params);
-    },
     *add({ payload }, { call, put }) {
       return yield call(Serivce.add, payload.params);
+    },
+    *update({ payload }, { call, put }) {
+      return yield call(Serivce.update, payload.params);
     },
     *del({ payload }, { call, put }) {
       return yield call(Serivce.del, payload.params);

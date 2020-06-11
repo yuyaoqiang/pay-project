@@ -65,7 +65,7 @@ export const getValueEnum = (origin = [], cb) => {
   const valueEnum = {};
   const list = cb(origin);
   _.map(list, l => {
-    valueEnum[l.type] = { text: l.name, status:l.status?'Success':'' };
+    valueEnum[l.type] = { text: l.name, status:l.status?l.status:'' };
   });
   return valueEnum;
 };

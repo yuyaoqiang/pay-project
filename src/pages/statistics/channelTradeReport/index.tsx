@@ -1,5 +1,5 @@
 import { connect } from 'dva';
-import React, { useRef,useState,useEffect} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from './data';
 import { BeforeCurrentDateComponent } from '@/components/DateComponent';
@@ -12,51 +12,67 @@ const Agent = props => {
   const actionRef = useRef<ActionType>();
   const [dateRange, setDateRange] = useState({
     hasRadio: '',
-    date: [],
+    date: [moment(),moment().add(1, 'day')],
   });
-  const { dispatch, common } = props;
-
-  useEffect(() => {
-    findaccountChangeType();
-  }, []);
-
+  const [total, setTotal] = useState(0);
+  const { dispatch } = props;
   const changeDateType = dateRange => {
     setDateRange(dateRange);
   };
-
   const columns: ProColumns<TableListItem>[] = [
     {
-      title: '用户名',
-      dataIndex: 'userName',
+      title: '通道',
+      dataIndex: 'channelName',
       align: 'center',
+      hideInSearch: true,
     },
     {
-      title: '订单号',
-      dataIndex: 'orderNo',
+      title: '交易金额',
+      dataIndex: 'paidAmount',
       align: 'center',
-      hideInSearch:true,
+      hideInSearch: true,
     },
     {
-      title: '帐变类型',
-      dataIndex: 'accountChangeTypeName',
+      title: '手续费',
+      dataIndex: 'poundage',
       align: 'center',
-      valueEnum: utils.getValueEnum(common.accountChangeType, list => {
-        return list.map(m => {
-          return {
-            type: m.dictItemCode,
-            name: m.dictItemName,
-          };
-        });
-      }),
+      hideInSearch: true,
     },
     {
-      title: '账变时间',
-      dataIndex: 'accountChangeTime',
+      title: '代理返点',
+      dataIndex: 'rebateAmount',
       align: 'center',
-      hideInSearch:true,
+      hideInSearch: true,
     },
     {
-      title: '账变时间',
+      title: '已支付订单量',
+      dataIndex: 'paidOrderNum',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '订单量',
+      dataIndex: 'orderNum',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '下发手续费',
+      dataIndex: 'withdrawPoundage',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '成功率',
+      dataIndex: 'successRate',
+      align: 'center',
+      hideInSearch: true,
+      render:(item)=>{
+        return `${item}%`
+      }
+    },
+    {
+      title: '日期',
       dataIndex: 'dateRange',
       align: 'center',
       hideInTable: true,
@@ -70,51 +86,35 @@ const Agent = props => {
         );
       },
     },
-    {
-      title: '备注',
-      dataIndex: 'note',
-      align: 'center',
-      hideInSearch:true,
-    },
-    {
-      title: '账变金额',
-      dataIndex: 'accountChangeAmount',
-      align: 'center',
-      hideInSearch:true,
-    },
-    {
-      title: '保证金',
-      dataIndex: 'cashDeposit',
-      align: 'center',
-      hideInSearch:true,
-    },
   ];
-
-  const findaccountChangeType = () => {
-    dispatch({
-      type: 'common/findaccountChangeType',
-      payload: {},
-    });
-  };
   const getDatas = params => {
     if (!params.dateRange) {
-      params.startTime = moment().format(constant.YYYY_MM_DD);
-      params.endTime = moment().format(constant.YYYY_MM_DD);
+      params.beginDate = moment().format(constant.YYYY_MM_DD);
+      params.endDate = moment()
+        .add(1, 'day')
+        .format(constant.YYYY_MM_DD);
     } else {
-      params.startTime = moment(params.dateRange[0]).format(constant.YYYY_MM_DD);
-      params.endTime = moment(params.dateRange[1]).format(constant.YYYY_MM_DD);
+      params.beginDate = moment(params.dateRange[0]).format(constant.YYYY_MM_DD);
+      params.endDate = moment(params.dateRange[1])
+        .add(1, 'day')
+        .format(constant.YYYY_MM_DD);
     }
     return dispatch({
-      type: 'accountChangeLog/list',
+      type: 'channelTradeReport/list',
       payload: { params },
-    }).then(data => data.data);
+    }).then(data => {
+      let sum = data.data.statistics.sum || {};
+      data.data.data.push({ ...sum, reportDate: '总计' });
+      setTotal(data.data.statistics.withdrawableAmount);
+      return data.data;
+    });
   };
   return (
     <PageHeaderWrapper title={false}>
       <ProTable<TableListItem>
         rowKey="id"
         actionRef={actionRef}
-        headerTitle="码商账变日记"
+        headerTitle="通道报表"
         request={params => {
           const { current: pageNum, pageSize, ...rest } = params;
           params = { pageNum, pageSize, ...rest };
@@ -129,18 +129,13 @@ const Agent = props => {
           reload: true,
           density: false,
         }}
-        pagination={{
-          defaultCurrent: 1,
-          defaultPageSize: 20,
-          position: 'bottom',
-          showTotal: (total, range) => `共${total}条记录`,
-        }}
+        pagination={false}
       />
     </PageHeaderWrapper>
   );
 };
 export default connect(({ loading, user, common }: ConnectState) => ({
-  loadingState: loading.models.channel,
+  loadingState: loading.models.channelTradeReport,
   user,
   common,
 }))(Agent);
