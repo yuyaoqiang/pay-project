@@ -284,4 +284,22 @@ export default [
       },
     ]
   },
+  {
+    path: 'systemRole',
+    name: '角色权限管理',
+    meta: {
+      title: 'permission',
+      icon: '',
+    },
+    children: [
+      {
+        path: 'role',
+        name: '角色管理',
+      },
+      {
+        path: 'permission',
+        name: '权限管理',
+      },
+    ]
+  },
 ];
