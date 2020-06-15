@@ -12,6 +12,7 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState, UserModelState } from '@/models/connect';
 import routers from '@/utils/routers';
 import logo from '../assets/logo.svg';
+import { helpers } from '@/utils';
 
 export interface BasicLayoutProps extends ProLayoutProps {
   breadcrumbNameMap: {
@@ -31,8 +32,9 @@ export type BasicLayoutContext = { [K in 'location']: BasicLayoutProps[K] } & {
 };
 
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
-  const { dispatch, children, settings } = props;
+  const { dispatch, children, settings,user } = props;
   useEffect(() => {
+    getPermissions();
     getSystemSetting();
     getMerchantList();
     gatheringChannel();
@@ -54,6 +56,14 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     }, 10000);
     return () => clearInterval(timer);
   }, []);
+
+  const [deepRouters,setDeepRouters]=useState([])
+
+  const getPermissions = () => {
+    dispatch({ type: 'user/getPermissions', payload: {} }).then(res=>{
+      setDeepRouters(helpers.permissionsFilter(routers,res.data))
+    })
+  };
   const systemMessage = () => {
     dispatch({ type: 'systemInfo/getSystemMessage', payload: {} });
   };
@@ -123,7 +133,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
           <span>{route.breadcrumbName}</span>
         );
       }}
-      menuDataRender={() => routers}
+      menuDataRender={() => deepRouters}
       rightContentRender={() => <RightContent />}
       {...props}
       {...settings}

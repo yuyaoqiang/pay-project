@@ -36,11 +36,42 @@ export const getTotal = (attr, list) => {
   const result = list.filter(item => {
     return item.type == attr;
   });
-  return isJudge(result.length!==0)(result.length,0);
+  return isJudge(result.length !== 0)(result.length, 0);
 };
 export const getList = (attr, list) => {
   const result = list.filter(item => {
     return item.type == attr;
   });
   return result;
+};
+
+export const permissionsFilter = (origin, datas) => {
+  const filterArr = ['appealRecord', 'merchantOrder'];
+  if (_.isEmpty(datas)) return origin;
+  const deepData = _.cloneDeep(origin);
+  deepData.map(item => {
+    item.children.map(child => {
+      const data = datas.find(data => {
+        return data.id == child.id;
+      });
+      if (data) {
+        if (filterArr.includes(child.path)) {
+          child.falg = true;
+          return;
+        }
+        child.hideInMenu = false;
+      }
+    });
+    const flag = item.children.some(child => {
+      return child.hideInMenu === false;
+    });
+    const flag2 = item.children.some(child => {
+      return child.falg === true;
+    });
+
+    if (flag || flag2) {
+      item.hideInMenu = false;
+    }
+  });
+  return deepData;
 };

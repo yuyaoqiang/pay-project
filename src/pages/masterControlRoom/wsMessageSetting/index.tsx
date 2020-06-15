@@ -12,10 +12,10 @@ import { constant, helpers } from '@/utils';
 
 const defulatItemLayout_2 = {
   labelCol: {
-    span: 10,
+    span: 8,
   },
   wrapperCol: {
-    span: 10,
+    span: 16,
   },
 };
 const defulatItemLayout_1 = {
@@ -27,14 +27,9 @@ const defulatItemLayout_1 = {
   },
 };
 const CustomerQrcodeSetting = props => {
-  const [configData, setConfigData] = useState({
-    customerServiceExplain: undefined,
-    qrcodeStorageId: undefined,
-  });
+  const [configData, setConfigData] = useState("");
   const [imgAddress, setImgAddress] = useState<string>('');
-  useEffect(() => {
-    setImgAddress(configData.qrcodeStorageId);
-  }, [configData]);
+
   const { dispatch, form, loadingState } = props;
   useEffect(() => {
     getDatas();
@@ -42,11 +37,11 @@ const CustomerQrcodeSetting = props => {
   const renderForms = {
     row_1: [
       {
-        type: 'textarea',
-        label: '客服说明',
-        key: 'customerServiceExplain',
+        type: 'input',
+        label: '地址',
+        key: 'host',
         validator: validator.onlyRequier,
-        defulatVal: configData.customerServiceExplain,
+        defulatVal: configData,
         placeholder: ' ',
       },
     ],
@@ -54,18 +49,17 @@ const CustomerQrcodeSetting = props => {
 
   const getDatas = () => {
     return dispatch({
-      type: 'customerQrcodeSetting/get',
+      type: 'wsMessageSetting/get',
       payload: {},
     }).then(data => {
-      setConfigData(data.data);
+      setConfigData(_.get(data,'data.host'));
     });
   };
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
-      fieldsValue.qrcodeStorageId = imgAddress;
       dispatch({
-        type: 'customerQrcodeSetting/update',
+        type: 'wsMessageSetting/update',
         payload: { params: fieldsValue },
       }).then(data => {
         message.success(data.message || constant.alertMessage.UPDATE_SUCCESS);
@@ -84,17 +78,8 @@ const CustomerQrcodeSetting = props => {
   return (
     <PageHeaderWrapper title={false}>
       <Spin spinning={loadingState} size="large" wrapperClassName="spin">
-        <Card title="下单设置" bordered={false}>
+        <Card title="WS消息设置" bordered={false}>
           <Row gutter={[8, 0]}>{generateCols(renderForms.row_1, 12, defulatItemLayout_2)}</Row>
-          <Form>
-            <Form.Item label={'客服二维码'} {...defulatItemLayout_1}>
-              <GeneralUploadComponent
-                {...props}
-                imgAddress={`/api/storage/fetch/${imgAddress}`}
-                setImgAddress={setImgAddress}
-              />
-            </Form.Item>
-          </Form>
           ,
           <div style={{ textAlign: 'center' }}>
             <Button
@@ -112,6 +97,6 @@ const CustomerQrcodeSetting = props => {
   );
 };
 export default connect(({ loading, common, user }: ConnectState) => ({
-  loadingState: loading.models.customerQrcodeSetting,
+  loadingState: loading.models.wsMessageSetting,
   common,
 }))(Form.create()(CustomerQrcodeSetting));

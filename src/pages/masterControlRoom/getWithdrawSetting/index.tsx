@@ -1,6 +1,6 @@
 import { connect } from 'dva';
 import React, { useState, useEffect } from 'react';
-import { message, Card, Form, Button, Col, Row,Input } from 'antd';
+import { message, Card, Form, Button, Col, Row, Input,Spin } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { ConnectState } from '@/models/connect';
 import { FromItemLayout } from '@/general';
@@ -46,7 +46,7 @@ const getRechargeSetting = props => {
         validator: validator.onlyRequier,
         defulatVal: configData.everydayWithdrawTimesUpperLimit,
         placeholder: '',
-        suffix:'次'
+        suffix: '次',
       },
     ],
   };
@@ -64,8 +64,8 @@ const getRechargeSetting = props => {
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
-      if(!configData.withdrawLowerLimit || !configData.withdrawUpperLimit) {
-        message.error("请填写限额/最低/最高")
+      if (!configData.withdrawLowerLimit || !configData.withdrawUpperLimit) {
+        message.error('请填写限额/最低/最高');
         return;
       }
       const htmlContent = editorState.toHTML();
@@ -95,10 +95,11 @@ const getRechargeSetting = props => {
   };
   return (
     <PageHeaderWrapper title={false}>
-      <Card title="下单设置" bordered={false}>
-        <Row gutter={[8, 0]}>{generateCols(renderForms.row_1, 12,defulatItemLayout_2)}</Row>
-        <Row>
-        <Col key={`row-16`} span={12}>
+      <Spin spinning={loadingState} size="large" wrapperClassName="spin">
+        <Card title="下单设置" bordered={false}>
+          <Row gutter={[8, 0]}>{generateCols(renderForms.row_1, 12, defulatItemLayout_2)}</Row>
+          <Row>
+            <Col key={`row-16`} span={12}>
               <Form.Item label="限额/最低/最高" labelCol={{ span: 10 }} wrapperCol={{ span: 10 }}>
                 <Input.Group compact>
                   <Input
@@ -135,10 +136,10 @@ const getRechargeSetting = props => {
                 </Input.Group>
               </Form.Item>
             </Col>
-        </Row>
-        <Row gutter={[8, 0]}>
+          </Row>
+          <Row gutter={[8, 0]}>
             <Col span={24}>
-              <Form.Item label={'提现说明'} labelCol={{ span: 5 }} wrapperCol={{ span: 17}}>
+              <Form.Item label={'提现说明'} labelCol={{ span: 5 }} wrapperCol={{ span: 17 }}>
                 <div className="my-component" style={{ border: '1px solid #d9d9d9' }}>
                   <BraftEditor
                     value={editorState}
@@ -149,12 +150,18 @@ const getRechargeSetting = props => {
               </Form.Item>
             </Col>
           </Row>
-        <div style={{ textAlign: 'center' }}>
-          <Button loading={loadingState} onClick={() => okHandle()} type={'primary'} size={'large'}>
-            提交
-          </Button>
-        </div>
-      </Card>
+          <div style={{ textAlign: 'center' }}>
+            <Button
+              loading={loadingState}
+              onClick={() => okHandle()}
+              type={'primary'}
+              size={'large'}
+            >
+              提交
+            </Button>
+          </div>
+        </Card>
+      </Spin>
     </PageHeaderWrapper>
   );
 };

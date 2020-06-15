@@ -139,6 +139,11 @@ export default {
                   path: '/masterControlRoom/refreshCache',
                   component: './masterControlRoom/refreshCache',
                 },
+                {
+                  name: 'wsMessageSetting',
+                  path: '/masterControlRoom/wsMessageSetting',
+                  component: './masterControlRoom/wsMessageSetting',
+                },
               ],
             },
             {
@@ -164,7 +169,12 @@ export default {
                   name: 'creditMember',
                   path: '/account/creditMember',
                   component: './account/creditMember',
-                }
+                },
+                {
+                  name: 'permission',
+                  path: '/account/permission',
+                  component: './account/permission',
+                },
               ]
             },
             {
@@ -312,23 +322,6 @@ export default {
                   name: 'dict',
                   path: '/systemManger/dict',
                   component: './systemManger/dict',
-                },
-
-              ]
-            },
-            {
-              path: '/systemRole',
-              name: 'systemRole',
-              routes: [
-                {
-                  name: 'role',
-                  path: '/systemRole/role',
-                  component: './systemRole/role',
-                },
-                {
-                  name: 'permission',
-                  path: '/systemRole/permission',
-                  component: './systemRole/permission',
                 },
 
               ]

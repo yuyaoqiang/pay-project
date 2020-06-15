@@ -43,18 +43,18 @@ const Agent = props => {
     {
       title: '用户名',
       dataIndex: 'userName',
+      width: 80,
+      ellipsis: true,
       align: 'center',
       hideInSearch: true,
       render: (item, record: any) => {
         return (
-          <Button
-            type="link"
+          <a
             onClick={() => {
               getRcord(record);
               handleInfoModalVisible(true);
             }}
-            size="small"
-          >{`${record.userName}`}</Button>
+          >{`${record.userName}`}</a>
         );
       },
     },
@@ -156,6 +156,7 @@ const Agent = props => {
           <Button
             type={'primary'}
             size={'small'}
+            style={{ margin: 2 }}
             onClick={() => {
               getRcord(record);
               handleModalVisible(true);
@@ -163,21 +164,31 @@ const Agent = props => {
           >
             修改
           </Button>
-          <Divider type="vertical" />
+          <Button
+            type={'primary'}
+            size={'small'}
+            style={{ margin: 2 }}
+            onClick={() => {
+              getRcord(record);
+              handleConfigChannleModalVisible(true);
+            }}
+          >
+            通道费率
+          </Button>
+          <Button
+            type={'primary'}
+            size={'small'}
+            style={{ margin: 2 }}
+            onClick={() => {
+              getRcord(record);
+              handleAdjustCashDepositModalVisible(true);
+            }}
+          >
+            调整可提现金额
+          </Button>
           <Popover
             content={
               <div style={{ maxWidth: 120, textAlign: 'center', padding: 4 }}>
-                <Button
-                  type={'primary'}
-                  size={'small'}
-                  style={{ margin: 2 }}
-                  onClick={() => {
-                    getRcord(record);
-                    handleConfigChannleModalVisible(true);
-                  }}
-                >
-                  通道费率
-                </Button>
                 <Button
                   type={'primary'}
                   size={'small'}
@@ -200,17 +211,7 @@ const Agent = props => {
                 >
                   修改资金密码
                 </Button>
-                <Button
-                  type={'primary'}
-                  size={'small'}
-                  style={{ margin: 2 }}
-                  onClick={() => {
-                    getRcord(record);
-                    handleAdjustCashDepositModalVisible(true);
-                  }}
-                >
-                  调整可提现金额
-                </Button>
+
                 <Button
                   type={'primary'}
                   size={'small'}
@@ -403,6 +404,8 @@ const Agent = props => {
         modalVisible={infoModalVisible}
         confirmLoading={props.loadingState}
         defulat={rcord}
+        actionRef={actionRef}
+        dispatch={dispatch}
       />
       <UpdatePsd
         onSubmit={value => {
@@ -424,15 +427,17 @@ const Agent = props => {
         defulat={rcord}
         hasModity={hasModity}
       />
-      <AdjustCashDeposit
-        onCancel={() => handleAdjustCashDepositModalVisible(false)}
-        modalVisible={adjustCashDepositModalVisible}
-        confirmLoading={props.loadingState}
-        defulat={rcord}
-        actionRef={actionRef}
-        dispatch={dispatch}
-        hasModity={hasModity}
-      />
+      {adjustCashDepositModalVisible && (
+        <AdjustCashDeposit
+          onCancel={() => handleAdjustCashDepositModalVisible(false)}
+          modalVisible={adjustCashDepositModalVisible}
+          confirmLoading={props.loadingState}
+          defulat={rcord}
+          actionRef={actionRef}
+          dispatch={dispatch}
+          hasModity={hasModity}
+        />
+      )}
       {bankCardVisible && (
         <AllCodeBusinessman
           onCancel={() => handleBankCardModalVisible(false)}

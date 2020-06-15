@@ -90,5 +90,11 @@ class Service {
       params,
     });
   }
+  @Debounce(constant.DEBOUNCE_TIME, { leading: true })
+  static findGatheringChannelRateByMerchantId(params) {
+    return request.get('/gatheringChannel/findGatheringChannelRateByMerchantId', {
+      params,
+    });
+  }
 }
 export default Service;

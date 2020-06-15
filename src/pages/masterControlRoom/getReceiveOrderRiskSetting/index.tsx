@@ -1,6 +1,6 @@
 import { connect } from 'dva';
 import React, { useState, useEffect } from 'react';
-import { message, Card, Form, Button, Input, Col, Row, Select } from 'antd';
+import { message, Card, Form, Button, Spin,Input, Col, Row, Select } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { ConnectState } from '@/models/connect';
 import { FromItemLayout } from '@/general';
@@ -247,145 +247,154 @@ const GetReceiveOrderRiskSetting = props => {
   };
   return (
     <PageHeaderWrapper title={false}>
-      <Card title="下单设置" bordered={false}>
-        <Row gutter={[8, 0]}>{generateCols(renderForms.row_1, 12, defulatItemLayout_0)}</Row>
-        <Row gutter={[8, 0]}>{generateCols(renderForms.row_2, 12, defulatItemLayout_0)}</Row>
-        <Row gutter={[8, 0]}>
-          {generateCols(renderForms.row_3, 12, {
-            labelCol: {
-              span: 12,
-            },
-            wrapperCol: {
-              span: 4,
-            },
-          })}
-        </Row>
+      <Spin spinning={loadingState} size="large" wrapperClassName="spin">
+        <Card title="下单设置" bordered={false}>
+          <Row gutter={[8, 0]}>{generateCols(renderForms.row_1, 12, defulatItemLayout_0)}</Row>
+          <Row gutter={[8, 0]}>{generateCols(renderForms.row_2, 12, defulatItemLayout_0)}</Row>
+          <Row gutter={[8, 0]}>
+            {generateCols(renderForms.row_3, 12, {
+              labelCol: {
+                span: 12,
+              },
+              wrapperCol: {
+                span: 4,
+              },
+            })}
+          </Row>
 
-        <Row gutter={[8, 0]}>
-          <Col key={`row-17`} span={12}>
-            <GenerateFormCompoents
-              formItems={[renderForms.row_6[0]]}
-              form={form}
-              itemLayout={{
-                labelCol: {
-                  span: 6,
-                },
-                wrapperCol: {
-                  span: 10,
-                },
-              }}
-            />
-          </Col>
-          <Col key={`row-18`} span={12}>
-            <GenerateFormCompoents
-              formItems={[renderForms.row_6[1]]}
-              form={form}
-              itemLayout={{
-                labelCol: {
-                  span: 6,
-                },
-                wrapperCol: {
-                  span: 10,
-                },
-              }}
-            />
-          </Col>
-        </Row>
-        <Row gutter={[8, 0]}>
-          <Col key={`row-11`} span={9}>
-            <GenerateFormCompoents
-              formItems={[renderForms.row_4[0]]}
-              form={form}
-              itemLayout={defulatItemLayout_2}
-            />
-          </Col>
-          <Col key={`row-12`} span={12}>
-            <GenerateFormCompoents
-              formItems={[renderForms.row_4[1]]}
-              form={form}
-              itemLayout={defulatItemLayout_1}
-            />
-          </Col>
-        </Row>
-        <Row gutter={[8, 0]}>
-          <Col key={`row-13`} span={9}>
-            <GenerateFormCompoents
-              formItems={[renderForms.row_5[0]]}
-              form={form}
-              itemLayout={defulatItemLayout_2}
-            />
-          </Col>
-          <Col key={`row-14`} span={12}>
-            <GenerateFormCompoents
-              formItems={[renderForms.row_5[1]]}
-              form={form}
-              itemLayout={defulatItemLayout_1}
-            />
-          </Col>
-        </Row>
-        <Row gutter={[8, 0]}>
-          <Col key={`row-15`} span={9}>
-            <GenerateFormCompoents
-              formItems={[renderForms.row_8[0]]}
-              form={form}
-              itemLayout={defulatItemLayout_2}
-            />
-          </Col>
-          {helpers.isJudge(configData.floatAmountMode)(
-            <Col key={`row-16`} span={12}>
-              <Form.Item label="范围" labelCol={{ span: 2 }} wrapperCol={{ span: 15 }}>
-                <Input.Group compact>
-                  <Select
-                    value={configData.floatAmountDirection}
-                    onChange={item => setConfigData({ ...configData, floatAmountDirection: item })}
-                  >
-                    <Select.Option value="up">向上</Select.Option>
-                    <Select.Option value="down">向下</Select.Option>
-                  </Select>
-                  <Input
-                    style={{ width: 100, textAlign: 'center' }}
-                    value={configData.minFloatAmount}
-                    onChange={item =>
-                      setConfigData({ ...configData, minFloatAmount: item.target.value })
-                    }
-                    placeholder="最小值"
-                  />
-                  <Input
-                    className="site-input-split"
-                    style={{
-                      width: 30,
-                      borderLeft: 0,
-                      borderRight: 0,
-                      pointerEvents: 'none',
-                    }}
-                    placeholder="~"
-                    disabled
-                  />
-                  <Input
-                    className="site-input-right"
-                    value={configData.maxFloatAmount}
-                    onChange={item =>
-                      setConfigData({ ...configData, maxFloatAmount: item.target.value })
-                    }
-                    style={{
-                      width: 100,
-                      textAlign: 'center',
-                    }}
-                    placeholder="最大值"
-                  />
-                </Input.Group>
-              </Form.Item>
-            </Col>,
-            null,
-          )}
-        </Row>
+          <Row gutter={[8, 0]}>
+            <Col key={`row-17`} span={12}>
+              <GenerateFormCompoents
+                formItems={[renderForms.row_6[0]]}
+                form={form}
+                itemLayout={{
+                  labelCol: {
+                    span: 6,
+                  },
+                  wrapperCol: {
+                    span: 10,
+                  },
+                }}
+              />
+            </Col>
+            <Col key={`row-18`} span={12}>
+              <GenerateFormCompoents
+                formItems={[renderForms.row_6[1]]}
+                form={form}
+                itemLayout={{
+                  labelCol: {
+                    span: 6,
+                  },
+                  wrapperCol: {
+                    span: 10,
+                  },
+                }}
+              />
+            </Col>
+          </Row>
+          <Row gutter={[8, 0]}>
+            <Col key={`row-11`} span={9}>
+              <GenerateFormCompoents
+                formItems={[renderForms.row_4[0]]}
+                form={form}
+                itemLayout={defulatItemLayout_2}
+              />
+            </Col>
+            <Col key={`row-12`} span={12}>
+              <GenerateFormCompoents
+                formItems={[renderForms.row_4[1]]}
+                form={form}
+                itemLayout={defulatItemLayout_1}
+              />
+            </Col>
+          </Row>
+          <Row gutter={[8, 0]}>
+            <Col key={`row-13`} span={9}>
+              <GenerateFormCompoents
+                formItems={[renderForms.row_5[0]]}
+                form={form}
+                itemLayout={defulatItemLayout_2}
+              />
+            </Col>
+            <Col key={`row-14`} span={12}>
+              <GenerateFormCompoents
+                formItems={[renderForms.row_5[1]]}
+                form={form}
+                itemLayout={defulatItemLayout_1}
+              />
+            </Col>
+          </Row>
+          <Row gutter={[8, 0]}>
+            <Col key={`row-15`} span={9}>
+              <GenerateFormCompoents
+                formItems={[renderForms.row_8[0]]}
+                form={form}
+                itemLayout={defulatItemLayout_2}
+              />
+            </Col>
+            {helpers.isJudge(configData.floatAmountMode)(
+              <Col key={`row-16`} span={12}>
+                <Form.Item label="范围" labelCol={{ span: 2 }} wrapperCol={{ span: 15 }}>
+                  <Input.Group compact>
+                    <Select
+                      value={configData.floatAmountDirection}
+                      onChange={item =>
+                        setConfigData({ ...configData, floatAmountDirection: item })
+                      }
+                    >
+                      <Select.Option value="up">向上</Select.Option>
+                      <Select.Option value="down">向下</Select.Option>
+                    </Select>
+                    <Input
+                      style={{ width: 100, textAlign: 'center' }}
+                      value={configData.minFloatAmount}
+                      onChange={item =>
+                        setConfigData({ ...configData, minFloatAmount: item.target.value })
+                      }
+                      placeholder="最小值"
+                    />
+                    <Input
+                      className="site-input-split"
+                      style={{
+                        width: 30,
+                        borderLeft: 0,
+                        borderRight: 0,
+                        pointerEvents: 'none',
+                      }}
+                      placeholder="~"
+                      disabled
+                    />
+                    <Input
+                      className="site-input-right"
+                      value={configData.maxFloatAmount}
+                      onChange={item =>
+                        setConfigData({ ...configData, maxFloatAmount: item.target.value })
+                      }
+                      style={{
+                        width: 100,
+                        textAlign: 'center',
+                      }}
+                      placeholder="最大值"
+                    />
+                  </Input.Group>
+                </Form.Item>
+              </Col>,
+              null,
+            )}
+          </Row>
 
-        <div style={{ textAlign: 'center' }}>
-          <Button loading={loadingState} onClick={() => okHandle()} type={'primary'} size={'large'}>
-            提交
-          </Button>
-        </div>
-      </Card>
+          <div style={{ textAlign: 'center' }}>
+            <Button
+              loading={loadingState}
+              onClick={() => okHandle()}
+              type={'primary'}
+              size={'large'}
+            >
+              提交
+            </Button>
+          </div>
+        </Card>
+      </Spin>
     </PageHeaderWrapper>
   );
 };

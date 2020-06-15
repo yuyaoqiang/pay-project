@@ -724,7 +724,7 @@ const Code = props => {
       )}
       {helpers.isJudge(maskVisiable)(
         <MaskImg
-          imgSrc={`/storage/fetch/${rcord.storageId}`}
+          imgSrc={`/api/storage/fetch/${rcord.storageId}`}
           visiable={() => {
             handlMaskVisiable(false);
           }}

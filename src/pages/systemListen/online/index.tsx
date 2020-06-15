@@ -23,7 +23,7 @@ const Agent = props => {
       title: '会话id',
       dataIndex: 'sessionId',
       align: 'center',
-      width: 200,
+      width: 120,
       ellipsis: true,
       hideInSearch: true,
     },
@@ -36,6 +36,8 @@ const Agent = props => {
       title: '登录系统',
       dataIndex: 'systemName',
       align: 'center',
+      width:100,
+      ellipsis:true,
       hideInSearch: true,
     },
     {
@@ -59,6 +61,8 @@ const Agent = props => {
       title: '操作系统',
       dataIndex: 'os',
       align: 'center',
+      width:80,
+      ellipsis:true,
       hideInSearch: true,
     },
     {

@@ -140,7 +140,7 @@ const ContentCompoent: React.FC<ModalFormProps> = props => {
                 <div style={{ textAlign: 'center' }}>未提供截图</div>,
                 <div>
                   {defulat.merchantSreenshotIds.map(item => {
-                    return <img src={`/storage/fetch/${item}`}></img>;
+                    return <img src={`/api/storage/fetch/${item}`}></img>;
                   })}
                 </div>,
               )}
@@ -159,7 +159,7 @@ const ContentCompoent: React.FC<ModalFormProps> = props => {
                 <div style={{ textAlign: 'center' }}>未提供截图</div>,
                 <div>
                   {defulat.userSreenshotIds.map(item => {
-                    return <img src={`/storage/fetch/${item}`}></img>;
+                    return <img src={`/api/storage/fetch/${item}`}></img>;
                   })}
                 </div>,
               )}
@@ -173,7 +173,7 @@ const ContentCompoent: React.FC<ModalFormProps> = props => {
                 <div style={{ textAlign: 'center' }}>未提供截图</div>,
                 <div>
                   {defulat.merchantSreenshotIds.map(item => {
-                    return <img src={`/storage/fetch/${item}`}></img>;
+                    return <img src={`/api/storage/fetch/${item}`}></img>;
                   })}
                 </div>,
               )}
@@ -192,7 +192,7 @@ const ContentCompoent: React.FC<ModalFormProps> = props => {
                 <div style={{ textAlign: 'center' }}>未提供截图</div>,
                 <div>
                   {defulat.merchantSreenshotIds.map(item => {
-                    return <img src={`/storage/fetch/${item}`}></img>;
+                    return <img src={`/api/storage/fetch/${item}`}></img>;
                   })}
                 </div>,
               )}
@@ -206,7 +206,7 @@ const ContentCompoent: React.FC<ModalFormProps> = props => {
                 <div style={{ textAlign: 'center' }}>未提供截图</div>,
                 <div>
                   {defulat.userSreenshotIds.map(item => {
-                    return <img src={`/storage/fetch/${item}`}></img>;
+                    return <img src={`/api/storage/fetch/${item}`}></img>;
                   })}
                 </div>,
               )}

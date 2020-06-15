@@ -31,6 +31,12 @@ const Model: ModelType = {
     *confirmToPaid({ payload }, { call, put }) {
       return yield call(Serivce.confirmToPaid, payload.params);
     },
+    *confirmToPaidWithUnconfirmedAutoFreeze({ payload }, { call, put }) {
+      return yield call(Serivce.confirmToPaidWithUnconfirmedAutoFreeze, payload.params);
+    },
+    *confirmToPaidWithCancelOrderRefund({ payload }, { call, put }) {
+      return yield call(Serivce.confirmToPaidWithCancelOrderRefund, payload.params);
+    },
     *resendNotice({ payload }, { call, put }) {
       return yield call(Serivce.resendNotice, payload.params);
     },

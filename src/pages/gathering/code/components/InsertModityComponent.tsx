@@ -146,7 +146,7 @@ const UpdatePsd: React.FC<ModalFormProps> = props => {
       )}
       {helpers.isJudge(!_.isEmpty(defulat.storageId))(
         <div style={{ textAlign: 'center' ,margin:'10px 0'}}>
-          <img style={{ width: '80%' }} src={img} />
+          <img style={{ width: '80%' }} src={img}  />
         </div>,
         null,
       )}

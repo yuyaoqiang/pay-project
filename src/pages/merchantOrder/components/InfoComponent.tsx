@@ -1,16 +1,28 @@
 import React, { useState } from 'react';
-import { Form, Modal, Divider, Descriptions, Button, message } from 'antd';
+import {
+  Form,
+  Modal,
+  Divider,
+  Descriptions,
+  Button,
+  message,
+  Checkbox,
+  Card,
+  Row,
+  Col,
+} from 'antd';
 import { ModalFormProps } from '@/interfaceGlobal';
 import { GenerateFormCompoents } from '@/components/FormComponent';
 import * as validator from '@/utils/validator';
 import _ from 'lodash';
-import { helpers, constant } from '@/utils';
+import img from '@/assets/1.png';
+import { helpers } from '@/utils';
 
 const InfoComponent: React.FC<ModalFormProps> = props => {
   const [noteVisiabel, setNoteVisiabel] = useState(false);
   const [supplementOrderVisiable, setSupplementOrderVisiable] = useState(false);
   const [okLoading, setOkLoading] = useState(false);
-  const [supplementOrderLoadding, setSupplementOrderLoadding] = useState(false);
+  const [noBounty, setNoBounty] = useState(false);
   const [delLoading, setDelLoading] = useState(false);
   const [noteLoading, setNoteLoading] = useState(false);
   const { modalVisible, form, onCancel, confirmLoading, actionRef, defulat = {}, dispatch } = props;
@@ -34,15 +46,91 @@ const InfoComponent: React.FC<ModalFormProps> = props => {
       placeholder: '请输入金额进行补单',
     },
   ];
+  const onChange = e => {
+    setNoBounty(e.target.checked);
+  };
   const okHandle = () => {
     Modal.confirm({
       title: '提示',
-      content: `确认收到款了吗`,
+      content: (
+        <div>
+          <p>确认收到款了吗</p>
+          <p>
+            <Checkbox onChange={onChange}>
+              <span style={{ color: 'red' }}>是否不返佣金与代理返点</span>
+            </Checkbox>
+          </p>
+        </div>
+      ),
       onOk: () => {
         setOkLoading(true);
         dispatch({
           type: 'merchantOrder/confirmToPaid',
-          payload: { params: { userAccountId: defulat.receivedAccountId, orderId: defulat.id } },
+          payload: {
+            params: { userAccountId: defulat.receivedAccountId, noBounty, orderId: defulat.id },
+          },
+        })
+          .then(data => {
+            onCancel();
+            setOkLoading(false);
+            message.success('操作成功');
+            actionRef.current?.reload();
+          })
+          .catch(err => {
+            setOkLoading(false);
+          });
+      },
+    });
+  };
+  const confirmToPaidWithCancelOrderRefund = () => {
+    Modal.confirm({
+      title: '提示',
+      content: (
+        <div>
+          <p>确定更改为已支付状态吗</p>
+          <p>
+            <Checkbox onChange={onChange}>
+              <span style={{ color: 'red' }}>是否不返佣金与代理返点</span>
+            </Checkbox>
+          </p>
+        </div>
+      ),
+      onOk: () => {
+        setOkLoading(true);
+        dispatch({
+          type: 'merchantOrder/confirmToPaidWithCancelOrderRefund',
+          payload: { params: { noBounty, orderId: defulat.id } },
+        })
+          .then(data => {
+            onCancel();
+            setOkLoading(false);
+            message.success('操作成功');
+            actionRef.current?.reload();
+          })
+          .catch(err => {
+            setOkLoading(false);
+          });
+      },
+    });
+  };
+  const confirmToPaidWithUnconfirmedAutoFreeze = () => {
+    Modal.confirm({
+      title: '提示',
+      content: (
+        <div>
+          <p>确定更改为已支付状态吗</p>
+          <p>
+            <Checkbox onChange={onChange}>
+              <span style={{ color: 'red' }}>是否不返佣金与代理返点</span>
+            </Checkbox>
+          </p>
+        </div>
+      ),
+      onOk: () => {
+        setOkLoading(true);
+        dispatch({
+          type: 'merchantOrder/confirmToPaidWithUnconfirmedAutoFreeze',
+          payload: { params: { noBounty, orderId: defulat.id } },
         })
           .then(data => {
             onCancel();
@@ -155,7 +243,7 @@ const InfoComponent: React.FC<ModalFormProps> = props => {
       </Modal>
 
       <Modal
-        width={700}
+        width={1000}
         destroyOnClose
         confirmLoading={confirmLoading}
         title={
@@ -170,55 +258,80 @@ const InfoComponent: React.FC<ModalFormProps> = props => {
         }}
         centered
       >
-        <Descriptions size={'small'} column={5} layout="vertical" bordered>
-          <Descriptions.Item label="订单有效时间">{defulat.usefulTime}</Descriptions.Item>
-          <Descriptions.Item label="确认时间">
-            {defulat.confirmTime}
-            {helpers.isJudge(!_.isEmpty(defulat.confirmWayName))(
-              <span style={{ color: 'red' }}> ({defulat.confirmWayName})</span>,
+        <Row>
+          <Col span={helpers.isJudge(!_.isEmpty(defulat.gatheringCodeStorageId))(18,24)}>
+            <Descriptions size={'small'} column={4} layout="vertical" bordered>
+              <Descriptions.Item label="订单有效时间">{defulat.usefulTime}</Descriptions.Item>
+              <Descriptions.Item label="确认时间">
+                {defulat.confirmTime}
+                {helpers.isJudge(!_.isEmpty(defulat.confirmWayName))(
+                  <span style={{ color: 'red' }}> ({defulat.confirmWayName})</span>,
+                  null,
+                )}
+              </Descriptions.Item>
+              <Descriptions.Item label="系统处理时间">{defulat.dealTime}</Descriptions.Item>
+              <Descriptions.Item label="通知时间">
+                {defulat.payInfo && defulat.payInfo.noticeTime}
+              </Descriptions.Item>
+            </Descriptions>
+            <Divider />
+            <Descriptions size={'small'} column={4} layout="vertical" bordered>
+              <Descriptions.Item label="处理人">{defulat.dealAccountUserName}</Descriptions.Item>
+              <Descriptions.Item label="备注">{defulat.note}</Descriptions.Item>
+              <Descriptions.Item label="异步通知地址">
+                {defulat.payInfo && defulat.payInfo.notifyUrl}
+              </Descriptions.Item>
+              <Descriptions.Item label="同步通知地址">
+                {defulat.payInfo && defulat.payInfo.returnUrl}
+              </Descriptions.Item>
+            </Descriptions>
+            <Descriptions size={'small'} column={4} layout="vertical" bordered>
+              <Descriptions.Item label="支付地址">{defulat.payUrl}</Descriptions.Item>
+            </Descriptions>
+            {helpers.isJudge(defulat.gatheringChannelName.includes('支付宝'))(
+              <Descriptions size={'small'} column={4} layout="vertical" bordered>
+                <Descriptions.Item label="支付宝昵称">{defulat.payee}</Descriptions.Item>
+                <Descriptions.Item label="真实姓名">{defulat.realName}</Descriptions.Item>
+                <Descriptions.Item label="支付宝账号">{defulat.account}</Descriptions.Item>
+              </Descriptions>,
               null,
             )}
-          </Descriptions.Item>
-          <Descriptions.Item label="系统处理时间">{defulat.dealTime}</Descriptions.Item>
-        </Descriptions>
-        <Divider />
-        <Descriptions size={'small'} column={4} layout="vertical" bordered>
-          <Descriptions.Item label="处理人">{defulat.dealAccountUserName}</Descriptions.Item>
-          <Descriptions.Item label="备注">{defulat.note}</Descriptions.Item>
-          <Descriptions.Item label="异步通知地址">
-            {defulat.payInfo && defulat.payInfo.notifyUrl}
-          </Descriptions.Item>
-          <Descriptions.Item label="同步通知地址">
-            {defulat.payInfo && defulat.payInfo.returnUrl}
-          </Descriptions.Item>
-        </Descriptions>
-        <Descriptions size={'small'} column={4} layout="vertical" bordered>
-          <Descriptions.Item label="支付地址">{defulat.payUrl}</Descriptions.Item>
-        </Descriptions>
-        <Descriptions size={'small'} column={4} layout="vertical" bordered>
-          <Descriptions.Item label="附加信息">
-            {defulat.payInfo && defulat.payInfo.attch}
-          </Descriptions.Item>
-          <Descriptions.Item label="订单ip">
-            {defulat.payInfo && defulat.payInfo.ip}
-          </Descriptions.Item>
-          <Descriptions.Item label="通知时间">
-            {defulat.payInfo && defulat.payInfo.noticeTime}
-          </Descriptions.Item>
-          {helpers.isJudge(['wechat', 'alipay', 'jdpay'].includes(defulat.gatheringChannelCode))(
-            <Descriptions.Item label="收款人">{defulat.payee}</Descriptions.Item>,
+            {helpers.isJudge(
+              ['bankCard', 'alipayTransferBank'].includes(defulat.gatheringChannelCode),
+            )(
+              <Descriptions size={'small'} column={4} layout="vertical" bordered>
+                <Descriptions.Item label="开户行">{defulat.openAccountBank}</Descriptions.Item>
+                <Descriptions.Item label="开户人">{defulat.accountHolder}</Descriptions.Item>
+                <Descriptions.Item label="卡号">{defulat.bankCardAccount}</Descriptions.Item>
+              </Descriptions>,
+              null,
+            )}
+
+            {helpers.isJudge(defulat.gatheringChannelCode == 'ysf')(
+              <Descriptions size={'small'} column={4} layout="vertical" bordered>
+                <Descriptions.Item label="云闪付账号">{defulat.account}</Descriptions.Item>
+                <Descriptions.Item label="真实姓名">{defulat.realName}</Descriptions.Item>
+              </Descriptions>,
+              null,
+            )}
+          </Col>
+          {helpers.isJudge(!_.isEmpty(defulat.gatheringCodeStorageId))(
+            <Col span={6}>
+              <Card>
+                <img
+                  style={{ width: '100%' }}
+                  src={`api/storage/fetch/${defulat.gatheringCodeStorageId}`}
+                />
+                ,
+                {/* {helpers.isJudge(
+                defulat.gatheringCodeStorageId == 'alipayIdTransfer' &&
+                  !_.isEmpty(defulat.alipayId),
+              )('alipayIdTransfer-img', null)} */}
+              </Card>
+            </Col>,
             null,
           )}
-        </Descriptions>
-        {helpers.isJudge(['bankCard'].includes(defulat.gatheringChannelCode))(
-          <Descriptions size={'small'} column={4} layout="vertical" bordered>
-            <Descriptions.Item label="银行卡信息">
-              {defulat.openAccountBank}/{defulat.accountHolder}/{defulat.bankCardAccount}
-            </Descriptions.Item>
-            ,
-          </Descriptions>,
-          null,
-        )}
+        </Row>
         {helpers.isJudge(['wechatMobile'].includes(defulat.gatheringChannelCode))(
           <Descriptions size={'small'} column={4} layout="vertical" bordered>
             <Descriptions.Item label="微信手机转账信息">
@@ -291,7 +404,7 @@ const InfoComponent: React.FC<ModalFormProps> = props => {
                 style={{ marginRight: 5 }}
                 type={'primary'}
                 onClick={() => {
-                  okHandle();
+                  confirmToPaidWithCancelOrderRefund();
                 }}
               >
                 确认已支付
@@ -324,7 +437,7 @@ const InfoComponent: React.FC<ModalFormProps> = props => {
                 style={{ marginRight: 5 }}
                 type={'primary'}
                 onClick={() => {
-                  okHandle();
+                  confirmToPaidWithUnconfirmedAutoFreeze();
                 }}
               >
                 确认已支付

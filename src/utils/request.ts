@@ -50,7 +50,6 @@ request.interceptors.response.use(async response => {
     router.push("/user/login")
     return Promise.reject(response);
   }
-  console.log(connect)
   message.error(data.message);
   return Promise.reject(response);
 });

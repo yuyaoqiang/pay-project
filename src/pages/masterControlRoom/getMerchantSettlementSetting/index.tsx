@@ -1,6 +1,6 @@
 import { connect } from 'dva';
 import React, { useState, useEffect } from 'react';
-import { message, Card, Form, Button, Input, Col, Row, Select } from 'antd';
+import { message, Card, Form, Button, Spin, Col, Row, Select } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { ConnectState } from '@/models/connect';
 import { FromItemLayout } from '@/general';
@@ -19,15 +19,14 @@ const defulatItemLayout_2 = {
 };
 const GetMerchantSettlementSetting = props => {
   const [configData, setConfigData] = useState({
-    merchantSettlementRate:  undefined,
-    minServiceFee:  undefined,
+    merchantSettlementRate: undefined,
+    minServiceFee: undefined,
   });
   const { dispatch, form, loadingState } = props;
   useEffect(() => {
     getDatas();
   }, []);
   const renderForms = {
-
     row_1: [
       {
         type: 'input',
@@ -45,9 +44,8 @@ const GetMerchantSettlementSetting = props => {
         validator: validator.onlyRequier,
         defulatVal: configData.minServiceFee,
         placeholder: ' ',
-      }
+      },
     ],
-
   };
 
   const getDatas = () => {
@@ -80,14 +78,21 @@ const GetMerchantSettlementSetting = props => {
   };
   return (
     <PageHeaderWrapper title={false}>
-      <Card title="下单设置" bordered={false}>
-        <Row gutter={[8, 0]}>{generateCols(renderForms.row_1, 12, defulatItemLayout_2)}</Row>
-        <div style={{ textAlign: 'center' }}>
-          <Button loading={loadingState} onClick={() => okHandle()} type={'primary'} size={'large'}>
-            提交
-          </Button>
-        </div>
-      </Card>
+      <Spin spinning={loadingState} size="large" wrapperClassName="spin">
+        <Card title="下单设置" bordered={false}>
+          <Row gutter={[8, 0]}>{generateCols(renderForms.row_1, 12, defulatItemLayout_2)}</Row>
+          <div style={{ textAlign: 'center' }}>
+            <Button
+              loading={loadingState}
+              onClick={() => okHandle()}
+              type={'primary'}
+              size={'large'}
+            >
+              提交
+            </Button>
+          </div>
+        </Card>
+      </Spin>
     </PageHeaderWrapper>
   );
 };

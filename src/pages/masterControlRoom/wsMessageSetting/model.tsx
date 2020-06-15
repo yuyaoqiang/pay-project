@@ -1,6 +1,6 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import Serivce from './service';
+import Service from './service';
 
 export type Effect = (
   action: AnyAction,
@@ -19,19 +19,16 @@ export interface ModelType {
 const initState = {};
 
 const Model: ModelType = {
-  namespace: 'role',
+  namespace: 'wsMessageSetting',
 
   state: initState,
 
   effects: {
-    *list({ payload }, { call, put }) {
-      return yield call(Serivce.list, payload.params);
+    *get({ payload }, { call, put }) {
+      return yield call(Service.get, payload.params);
     },
-    *add({ payload }, { call, put }) {
-      return yield call(Serivce.add, payload.params);
-    },
-    *del({ payload }, { call, put }) {
-      return yield call(Serivce.del, payload.params);
+    *update({ payload }, { call, put }) {
+      return yield call(Service.update, payload.params);
     },
   },
 

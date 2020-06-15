@@ -117,5 +117,11 @@ class Service {
       params,
     });
   }
+  @Debounce(constant.DEBOUNCE_TIME, { leading: true })
+  static regenerateSecretKey(params) {
+    return request.post('/merchant/resetGoogleSecretKey', {
+      data:params,
+    });
+  }
 }
 export default Service;

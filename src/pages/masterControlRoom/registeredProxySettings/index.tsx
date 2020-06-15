@@ -1,6 +1,6 @@
 import { connect } from 'dva';
 import React, { useState, useEffect } from 'react';
-import { message, Card, Form, Button, Col, Row } from 'antd';
+import { message, Card, Form, Button, Col, Row, Spin } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { ConnectState } from '@/models/connect';
 import BraftEditor from 'braft-editor';
@@ -40,44 +40,44 @@ const RegisteredProxySettings = props => {
     getDatas();
   }, []);
   const renderForms = {
-  row_1: [
-    {
-      type: 'switch',
-      label: '开放注册功能',
-      key: 'registerEnabled',
-      validator: validator.onlyRequier,
-      defulatVal: configData.registerEnabled,
-      placeholder: '',
-    },
-    {
-      type: 'switch',
-      label: '启用邀请码注册模式',
-      key: 'inviteRegisterEnabled',
-      validator: validator.onlyRequier,
-      defulatVal: configData.inviteRegisterEnabled,
-      placeholder: '',
-    },
-  ],
-  row_2: [
-    {
-      type: 'switch',
-      label: '限制下级开户只能开会员账号',
-      key: 'onlyOpenMemberAccount',
-      validator: validator.onlyRequier,
-      defulatVal: configData.onlyOpenMemberAccount,
-      placeholder: '',
-    },
-    {
-      type: 'input',
-      label: '邀请码有效时长',
-      key: 'inviteCodeEffectiveDuration',
-      validator: validator.onlyRequier,
-      defulatVal: configData.inviteCodeEffectiveDuration,
-      placeholder: '时间不能为空',
-      suffix:"天"
-    },
-  ],
-}
+    row_1: [
+      {
+        type: 'switch',
+        label: '开放注册功能',
+        key: 'registerEnabled',
+        validator: validator.onlyRequier,
+        defulatVal: configData.registerEnabled,
+        placeholder: '',
+      },
+      {
+        type: 'switch',
+        label: '启用邀请码注册模式',
+        key: 'inviteRegisterEnabled',
+        validator: validator.onlyRequier,
+        defulatVal: configData.inviteRegisterEnabled,
+        placeholder: '',
+      },
+    ],
+    row_2: [
+      {
+        type: 'switch',
+        label: '限制下级开户只能开会员账号',
+        key: 'onlyOpenMemberAccount',
+        validator: validator.onlyRequier,
+        defulatVal: configData.onlyOpenMemberAccount,
+        placeholder: '',
+      },
+      {
+        type: 'input',
+        label: '邀请码有效时长',
+        key: 'inviteCodeEffectiveDuration',
+        validator: validator.onlyRequier,
+        defulatVal: configData.inviteCodeEffectiveDuration,
+        placeholder: '时间不能为空',
+        suffix: '天',
+      },
+    ],
+  };
   const getDatas = () => {
     return dispatch({
       type: 'registeredProxySettings/get',
@@ -117,30 +117,37 @@ const RegisteredProxySettings = props => {
   };
   return (
     <PageHeaderWrapper title={false}>
-      <Card title="系统设置" bordered={false}>
-      <Row gutter={[8, 8]}>{generateCols(renderForms.row_1, 10,defulatItemLayout_1)}</Row>
-      <Row gutter={[8, 8]}>{generateCols(renderForms.row_2, 10,defulatItemLayout_1)}</Row>
-      <Form>
-        <Row gutter={[8, 0]}>
-            <Col span={24}>
-              <Form.Item label={'公告内容'} labelCol={{ span: 4 }} wrapperCol={{ span: 15 }}>
-                <div className="my-component" style={{ border: '1px solid #d9d9d9' }}>
-                  <BraftEditor
-                    value={editorState}
-                    onChange={handleEditorChange}
-                    contentStyle={{ height: '150px' }}
-                  />
-                </div>
-              </Form.Item>
-            </Col>
-          </Row>
-      </Form>
-        <div style={{ textAlign: 'center' }}>
-          <Button loading={loadingState} onClick={() => okHandle()} type={'primary'} size={'large'}>
-            提交
-          </Button>
-        </div>
-      </Card>
+      <Spin spinning={loadingState} size="large" wrapperClassName="spin">
+        <Card title="系统设置" bordered={false}>
+          <Row gutter={[8, 8]}>{generateCols(renderForms.row_1, 10, defulatItemLayout_1)}</Row>
+          <Row gutter={[8, 8]}>{generateCols(renderForms.row_2, 10, defulatItemLayout_1)}</Row>
+          <Form>
+            <Row gutter={[8, 0]}>
+              <Col span={24}>
+                <Form.Item label={'公告内容'} labelCol={{ span: 4 }} wrapperCol={{ span: 15 }}>
+                  <div className="my-component" style={{ border: '1px solid #d9d9d9' }}>
+                    <BraftEditor
+                      value={editorState}
+                      onChange={handleEditorChange}
+                      contentStyle={{ height: '150px' }}
+                    />
+                  </div>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+          <div style={{ textAlign: 'center' }}>
+            <Button
+              loading={loadingState}
+              onClick={() => okHandle()}
+              type={'primary'}
+              size={'large'}
+            >
+              提交
+            </Button>
+          </div>
+        </Card>
+      </Spin>
     </PageHeaderWrapper>
   );
 };

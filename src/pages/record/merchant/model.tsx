@@ -78,6 +78,9 @@ const Model: ModelType = {
     *generateSecretKey({ payload }, { call, put }) {
       return yield call(Serivce.generateSecretKey, payload.params);
     },
+    *regenerateSecretKey({ payload }, { call, put }) {
+      return yield call(Serivce.regenerateSecretKey, payload.params);
+    },
   },
 
   reducers: {},

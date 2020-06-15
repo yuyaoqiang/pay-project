@@ -68,7 +68,7 @@ const Code = props => {
 
   const getDatas = params => {
     return dispatch({
-      type: 'dict/list',
+      type: 'role/list',
       payload: { params },
     }).then(data => {
       setRcord(data.data);

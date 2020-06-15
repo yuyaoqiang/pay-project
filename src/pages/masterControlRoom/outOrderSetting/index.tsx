@@ -1,6 +1,6 @@
 import { connect } from 'dva';
 import React, { useState, useEffect } from 'react';
-import { message, Card, Form, Button, Col, Row } from 'antd';
+import { message, Card, Form, Button, Col, Row, Spin } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { ConnectState } from '@/models/connect';
 import { FromItemLayout } from '@/general';
@@ -98,30 +98,37 @@ const getRechargeSetting = props => {
   };
   return (
     <PageHeaderWrapper title={false}>
-      <Card title="下单设置" bordered={false}>
-        <Row gutter={[8, 0]}>{generateCols(renderForms.row_1, 12)}</Row>
-        <Row gutter={[8, 0]}>
-          <Col key={`row-1`} span={4}>
-            <GenerateFormCompoents
-              formItems={[renderForms.row_2[0]]}
-              form={form}
-              itemLayout={defulatItemLayout_2}
-            />
-          </Col>
-          <Col key={`row-5`} span={12}>
-            <GenerateFormCompoents
-              formItems={[renderForms.row_2[1]]}
-              form={form}
-              itemLayout={defulatItemLayout_1}
-            />
-          </Col>
-        </Row>
-        <div style={{ textAlign: 'center' }}>
-          <Button loading={loadingState} onClick={() => okHandle()} type={'primary'} size={'large'}>
-            提交
-          </Button>
-        </div>
-      </Card>
+      <Spin spinning={loadingState} size="large" wrapperClassName="spin">
+        <Card title="下单设置" bordered={false}>
+          <Row gutter={[8, 0]}>{generateCols(renderForms.row_1, 12)}</Row>
+          <Row gutter={[8, 0]}>
+            <Col key={`row-1`} span={4}>
+              <GenerateFormCompoents
+                formItems={[renderForms.row_2[0]]}
+                form={form}
+                itemLayout={defulatItemLayout_2}
+              />
+            </Col>
+            <Col key={`row-5`} span={12}>
+              <GenerateFormCompoents
+                formItems={[renderForms.row_2[1]]}
+                form={form}
+                itemLayout={defulatItemLayout_1}
+              />
+            </Col>
+          </Row>
+          <div style={{ textAlign: 'center' }}>
+            <Button
+              loading={loadingState}
+              onClick={() => okHandle()}
+              type={'primary'}
+              size={'large'}
+            >
+              提交
+            </Button>
+          </div>
+        </Card>
+      </Spin>
     </PageHeaderWrapper>
   );
 };

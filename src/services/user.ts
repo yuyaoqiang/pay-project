@@ -8,6 +8,13 @@ class UserService {
       params,
     });
   }
+  //获取用户信息
+  @Debounce(constant.DEBOUNCE_TIME, { leading: true })
+  static getPermissions(params) {
+    return request.get('/userAccount/permissions', {
+      params,
+    });
+  }
   // 登陆
   @Debounce(constant.DEBOUNCE_TIME, { leading: true })
   static fakeAccountLogin(params) {

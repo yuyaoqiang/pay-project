@@ -210,7 +210,7 @@ const UpdatePsd = props => {
         <Form>
           <GenerateFormCompoents formItems={renderItems} form={form} />
           <Form.Item label={'客服二维码'} {...defulatItemLayout_1}>
-            <GeneralUploadComponent {...props} imgAddress={`/storage/fetch/${imgAddress}`} setImgAddress={setImgAddress} />
+            <GeneralUploadComponent {...props} imgAddress={`/api/storage/fetch/${imgAddress}`} setImgAddress={setImgAddress} />
           </Form.Item>
         </Form>
       </Modal>

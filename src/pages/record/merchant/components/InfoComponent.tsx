@@ -1,21 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Modal, message, Button ,Card,Row,Col} from 'antd';
-import QRCode from 'qrcode.react';
+import React from 'react';
+import { Form, Modal, message, Button, Card, Row, Col } from 'antd';
 import { ModalFormProps } from '@/interfaceGlobal';
-import { GenerateFormCompoents } from '@/components/FormComponent';
-import * as validator from '@/utils/validator';
 import _ from 'lodash';
-import { helpers, constant } from '@/utils';
 
 const InfoComponent: React.FC<ModalFormProps> = props => {
-  const [authInfo, setAuthInfo] = useState({ googleSecretKey: null, googleAuthBindTime: null });
-  const { modalVisible, form, onSubmit, onCancel, confirmLoading, defulat = {}, dispatch } = props;
+  const { modalVisible, onCancel, confirmLoading, defulat = {}, dispatch,actionRef } = props;
+  const onClick = () => {
+    const params = { id: defulat.id };
+    return dispatch({
+      type: 'merchant/regenerateSecretKey',
+      payload: { params },
+    }).then(data => {
+      onCancel();
+      actionRef.current?.reload();
+      message.success(data.data || '重置谷歌验证码成功');
+    });
+  };
   return (
     <Modal
       width={700}
       destroyOnClose
       confirmLoading={confirmLoading}
       title={'商户信息'}
+      footer={[]}
       visible={modalVisible}
       onCancel={() => {
         onCancel();
@@ -24,7 +31,7 @@ const InfoComponent: React.FC<ModalFormProps> = props => {
     >
       <Card>
         <Row>
-          <Col span={7} >接入密钥:</Col>
+          <Col span={7}>接入密钥:</Col>
           <Col span={16}>{defulat.secretKey}</Col>
         </Row>
         <Row>
@@ -37,8 +44,21 @@ const InfoComponent: React.FC<ModalFormProps> = props => {
         </Row>
         <Row>
           <Col span={7}>谷歌验证器密钥:</Col>
-          <Col span={16}>{defulat.googleAuthBindTime != null ? defulat.googleSecretKey : '未绑定' }</Col>
+          <Col span={16}>
+            {defulat.googleAuthBindTime != null ? defulat.googleSecretKey : '未绑定'}
+          </Col>
         </Row>
+        <Row>
+          <Col span={7}>谷歌验证器绑定时间:</Col>
+          <Col span={16}>
+            {defulat.googleAuthBindTime != null ? defulat.googleAuthBindTime : ''}
+          </Col>
+        </Row>
+        <div style={{textAlign:'center',paddingTop:15}}>
+          <Button type={'primary'} loading={confirmLoading} onClick={onClick}>
+            重置谷歌验证码
+          </Button>
+        </div>
       </Card>
     </Modal>
   );

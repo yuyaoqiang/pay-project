@@ -1,7 +1,5 @@
 import { request, constant } from '@/utils';
 import Debounce from 'lodash-decorators/debounce';
-
-const muserUrl = constant.MUSER_V1;
 class Service {
   @Debounce(constant.DEBOUNCE_TIME, { leading: true })
   static list(params) {
@@ -15,6 +13,20 @@ class Service {
       params,
     });
   }
+  @Debounce(constant.DEBOUNCE_TIME, { leading: true })
+  static confirmToPaidWithCancelOrderRefund(params) {
+    return request.get('/merchantOrder/confirmToPaidWithCancelOrderRefund', {
+      params,
+    });
+  }
+
+  @Debounce(constant.DEBOUNCE_TIME, { leading: true })
+  static confirmToPaidWithUnconfirmedAutoFreeze(params) {
+    return request.get('/merchantOrder/confirmToPaidWithUnconfirmedAutoFreeze', {
+      params,
+    });
+  }
+
   @Debounce(constant.DEBOUNCE_TIME, { leading: true })
   static cancelOrderRefund(params) {
     return request.get('/merchantOrder/cancelOrderRefund', {

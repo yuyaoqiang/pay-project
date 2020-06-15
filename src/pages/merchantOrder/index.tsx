@@ -18,8 +18,8 @@ const MerchantOrder = props => {
     date: [moment(), moment()],
   });
 
-  const [reloadding, setReloadding] = useState<boolean>(false);
   const [modalVisible, handleModalVisible] = useState<boolean>(false);
+  const [data, setData] = useState<any>({});
   const [infoModalVisible, handleInfoModalVisible] = useState<boolean>(false);
   const [hasModity, handleHasModity] = useState<boolean>(false);
   const [rcord, setRcord] = useState<any>({});
@@ -42,12 +42,15 @@ const MerchantOrder = props => {
       align: 'center',
       hideInTable: true,
       valueEnum: utils.getValueEnum(common.merchantList, list => {
-        return list.map(m => {
-          return {
-            type: m.id,
-            name: m.merchantName,
-          };
-        });
+        return [
+          { name: '全部', type: 'all' },
+          ...list.map(m => {
+            return {
+              type: m.id,
+              name: m.merchantName,
+            };
+          }),
+        ];
       }),
     },
     {
@@ -63,8 +66,7 @@ const MerchantOrder = props => {
       align: 'center',
       render: (item, rcord: any) => {
         return (
-          <Button
-            type="link"
+          <a
             onClick={() => {
               getRcord(rcord);
               handleInfoModalVisible(true);
@@ -73,7 +75,7 @@ const MerchantOrder = props => {
             <p className={styles.mg0}>{rcord.orderNo}</p>
             <p className={styles.mg0}> {rcord.merchantName}</p>
             <p className={styles.mg0}>{rcord.payInfo && rcord.payInfo.orderNo}</p>
-          </Button>
+          </a>
         );
       },
     },
@@ -98,12 +100,15 @@ const MerchantOrder = props => {
       align: 'center',
       hideInTable: true,
       valueEnum: utils.getValueEnum(common.orderState, list => {
-        return list.map(m => {
-          return {
-            type: m.dictItemCode,
-            name: m.dictItemName,
-          };
-        });
+        return [
+          { name: '全部', type: 'all' },
+          ...list.map(m => {
+            return {
+              type: m.dictItemCode,
+              name: m.dictItemName,
+            };
+          }),
+        ];
       }),
     },
     {
@@ -113,12 +118,15 @@ const MerchantOrder = props => {
       align: 'center',
       hideInTable: true,
       valueEnum: utils.getValueEnum(common.gatheringChannel, list => {
-        return list.map(m => {
-          return {
-            type: m.channelCode,
-            name: m.channelName,
-          };
-        });
+        return [
+          { name: '全部', type: 'all' },
+          ...list.map(m => {
+            return {
+              type: m.channelCode,
+              name: m.channelName,
+            };
+          }),
+        ];
       }),
     },
     {
@@ -128,12 +136,15 @@ const MerchantOrder = props => {
       align: 'center',
       hideInTable: true,
       valueEnum: utils.getValueEnum(common.gatheringCode, list => {
-        return list.map(m => {
-          return {
-            type: m.id,
-            name: m.gatheringChannelName + '/收款人/' + m.payee,
-          };
-        });
+        return [
+          { name: '全部', type: 'all' },
+          ...list.map(m => {
+            return {
+              type: m.id,
+              name: m.gatheringChannelName + '/收款人/' + m.payee,
+            };
+          }),
+        ];
       }),
     },
     {
@@ -215,12 +226,15 @@ const MerchantOrder = props => {
       width: 100,
       hideInTable: true,
       valueEnum: utils.getValueEnum(common.orderConfirmWay, list => {
-        return list.map(m => {
-          return {
-            type: m.dictItemCode,
-            name: m.dictItemName,
-          };
-        });
+        return [
+          { name: '全部', type: 'all' },
+          ...list.map(m => {
+            return {
+              type: m.dictItemCode,
+              name: m.dictItemName,
+            };
+          }),
+        ];
       }),
     },
     {
@@ -251,13 +265,16 @@ const MerchantOrder = props => {
       dataIndex: 'noticeState',
       hideInTable: true,
       valueEnum: utils.getValueEnum(common.payNoticeState, list => {
-        return list.map(m => {
-          return {
-            type: m.dictItemCode,
-            name: m.dictItemName,
-            status: m.dictItemCode == 2 ? true : false,
-          };
-        });
+        return [
+          { name: '全部', type: 'all' },
+          ...list.map(m => {
+            return {
+              type: m.id,
+              name: m.merchantName,
+              status: m.dictItemCode == 2 ? true : false,
+            };
+          }),
+        ];
       }),
     },
     {
@@ -267,7 +284,7 @@ const MerchantOrder = props => {
       hideInSearch: true,
       dataIndex: 'payInfo.noticeState',
       width: 120,
-      render: (item, record:any) => {
+      render: (item, record: any) => {
         let reslut = { dictItemName: '' };
         common.payNoticeState.map(m => {
           if (m.dictItemCode == record.payInfo.noticeState) {
@@ -319,7 +336,6 @@ const MerchantOrder = props => {
               type={'primary'}
               size={'small'}
               onClick={() => {
-                setReloadding(true);
                 resendNotice(record.id);
               }}
             >
@@ -337,7 +353,7 @@ const MerchantOrder = props => {
       type: 'merchantOrder/list',
       payload: { params },
     }).then(data => {
-      setRcord(data.data);
+      setData(data.data);
       return data.data;
     });
   };
@@ -348,13 +364,10 @@ const MerchantOrder = props => {
       payload: { params: { id } },
     })
       .then(data => {
-        setReloadding(false);
         message.success('操作成功');
         actionRef.current?.reload();
       })
-      .catch(() => {
-        setReloadding(false);
-      });
+      .catch(() => {});
   };
 
   const insertModityRole = params => {
@@ -378,7 +391,7 @@ const MerchantOrder = props => {
     <>
       <PageHeaderWrapper title={false}>
         <ProTable<TableListItem>
-          rowKey="id"
+          rowKey={'id'}
           actionRef={actionRef}
           headerTitle="商户订单列表"
           toolBarRender={() => [
@@ -415,7 +428,7 @@ const MerchantOrder = props => {
             showTotal: (total, range) => `共${total}条记录`,
           }}
           footer={() => {
-            return <Card>{`已支付总计：${rcord.totalMoney}元`}</Card>;
+            return <Card>{`已支付总计：${data.statistics || 0}元`}</Card>;
           }}
         />
         {modalVisible && (

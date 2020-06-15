@@ -29,6 +29,8 @@ const Settlement = props => {
     {
       title: '订单号',
       dataIndex: 'orderNo',
+      width:100,
+      ellipsis:true,
       align: 'center',
     },
     {
@@ -77,8 +79,8 @@ const Settlement = props => {
       render: (item, record: any) => {
         return (
           <>
-            <p>{record.receiverUserName}</p>
-            <p>{record.receivedTime}</p>
+            <p style={{margin:0}}>{record.receiverUserName}</p>
+            <p style={{margin:0}}>{record.receivedTime}</p>
           </>
         );
       },
@@ -126,6 +128,7 @@ const Settlement = props => {
             return {
               type: m.dictItemCode,
               name: m.dictItemName,
+              status:helpers.isJudge(m.dictItemName=="已完结")('Success','Error')
             };
           }),
         ];

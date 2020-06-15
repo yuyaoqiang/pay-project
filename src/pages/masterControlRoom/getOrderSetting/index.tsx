@@ -1,6 +1,6 @@
 import { connect } from 'dva';
 import React, { useState, useEffect } from 'react';
-import { message, Card, Form, Button, Col, Row } from 'antd';
+import { message, Card, Form, Button, Col, Row, Spin } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { ConnectState } from '@/models/connect';
 import { FromItemLayout } from '@/general';
@@ -46,6 +46,12 @@ const GetOrderSetting = props => {
     showAllOrder: undefined,
     stopStartAndReceiveOrder: undefined,
     unconfirmedAutoFreezeDuration: undefined,
+    dispatchQueueRange: undefined,
+    dispatchQueueSort: undefined,
+  });
+  const [otherData, setOtherData] = useState({
+    dispatchQueueRange: [],
+    dispatchQueueSort: [],
   });
   const { dispatch, form, loadingState } = props;
   useEffect(() => {
@@ -211,6 +217,26 @@ const GetOrderSetting = props => {
         suffix: '分钟未确认冻结该订单',
       },
     ],
+    row_10: [
+      {
+        type: 'select',
+        label: '接单排队范围',
+        key: 'dispatchQueueRange',
+        validator: validator.onlyRequier,
+        defulatVal: configData.dispatchQueueRange,
+        formData: otherData.dispatchQueueRange,
+        placeholder: '该项为必填项',
+      },
+      {
+        type: 'select',
+        label: '接单排队顺序',
+        key: 'dispatchQueueSort',
+        validator: validator.onlyRequier,
+        defulatVal: configData.dispatchQueueSort,
+        formData: otherData.dispatchQueueSort,
+        placeholder: '该项为必填项',
+      },
+    ],
   };
 
   const getDatas = () => {
@@ -218,6 +244,16 @@ const GetOrderSetting = props => {
       type: 'getOrderSetting/get',
       payload: {},
     }).then(data => {
+      let sorts = [];
+      let ranges = [];
+      const otherData = _.get(data.data, 'otherData');
+      otherData.dispatchQueueSortData.map(item => {
+        sorts.push({ name: item.description, type: item.value });
+      });
+      otherData.dispatchQueueRangeData.map(item => {
+        ranges.push({ name: item.description, type: item.value });
+      });
+      setOtherData({ dispatchQueueSort: sorts, dispatchQueueRange: ranges });
       setConfigData(data.data);
     });
   };
@@ -243,38 +279,46 @@ const GetOrderSetting = props => {
   };
   return (
     <PageHeaderWrapper title={false}>
-      <Card title="下单设置" bordered={false}>
-        <Row gutter={[8, 0]}>{generateCols(renderForms.row_1, 12)}</Row>
-        <Row gutter={[8, 0]}>{generateCols(renderForms.row_2, 12)}</Row>
-        <Row gutter={[8, 0]}>{generateCols(renderForms.row_3, 12)}</Row>
-        <Row gutter={[8, 0]}>{generateCols(renderForms.row_4, 12)}</Row>
-        <Row gutter={[8, 0]}>{generateCols(renderForms.row_5, 12)}</Row>
-        <Row gutter={[8, 0]}>{generateCols(renderForms.row_6, 12)}</Row>
-        <Row gutter={[8, 0]}>{generateCols(renderForms.row_7, 12)}</Row>
-        <Row gutter={[8, 0]}>
-          <Col key={`row-1`} span={4}>
-            <GenerateFormCompoents
-              formItems={[renderForms.row_9[0]]}
-              form={form}
-              itemLayout={defulatItemLayout_2}
-            />
-          </Col>
-          <Col key={`row-5`} span={16}>
-            <GenerateFormCompoents
-              formItems={[renderForms.row_9[1]]}
-              form={form}
-              itemLayout={defulatItemLayout_1}
-            />
-          </Col>
-        </Row>
-        <Row gutter={[8, 0]}>{generateCols(renderForms.row_8, 12)}</Row>
+      <Spin spinning={loadingState} size="large" wrapperClassName="spin">
+        <Card title="下单设置" bordered={false}>
+          <Row gutter={[8, 0]}>{generateCols(renderForms.row_1, 12)}</Row>
+          <Row gutter={[8, 0]}>{generateCols(renderForms.row_10, 12)}</Row>
+          <Row gutter={[8, 0]}>{generateCols(renderForms.row_2, 12)}</Row>
+          <Row gutter={[8, 0]}>{generateCols(renderForms.row_3, 12)}</Row>
+          <Row gutter={[8, 0]}>{generateCols(renderForms.row_4, 12)}</Row>
+          <Row gutter={[8, 0]}>{generateCols(renderForms.row_5, 12)}</Row>
+          <Row gutter={[8, 0]}>{generateCols(renderForms.row_6, 12)}</Row>
+          <Row gutter={[8, 0]}>{generateCols(renderForms.row_7, 12)}</Row>
+          <Row gutter={[8, 0]}>
+            <Col key={`row-1`} span={4}>
+              <GenerateFormCompoents
+                formItems={[renderForms.row_9[0]]}
+                form={form}
+                itemLayout={defulatItemLayout_2}
+              />
+            </Col>
+            <Col key={`row-5`} span={16}>
+              <GenerateFormCompoents
+                formItems={[renderForms.row_9[1]]}
+                form={form}
+                itemLayout={defulatItemLayout_1}
+              />
+            </Col>
+          </Row>
+          <Row gutter={[8, 0]}>{generateCols(renderForms.row_8, 12)}</Row>
 
-        <div style={{ textAlign: 'center' }}>
-          <Button loading={loadingState} onClick={() => okHandle()} type={'primary'} size={'large'}>
-            提交
-          </Button>
-        </div>
-      </Card>
+          <div style={{ textAlign: 'center' }}>
+            <Button
+              loading={loadingState}
+              onClick={() => okHandle()}
+              type={'primary'}
+              size={'large'}
+            >
+              提交
+            </Button>
+          </div>
+        </Card>
+      </Spin>
     </PageHeaderWrapper>
   );
 };

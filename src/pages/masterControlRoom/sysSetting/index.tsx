@@ -1,13 +1,13 @@
 import { connect } from 'dva';
 import React, { useState, useEffect } from 'react';
-import { message, Card, Form, Button, Col, Row ,Spin} from 'antd';
+import { message, Card, Form, Button, Col, Row, Spin } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { ConnectState } from '@/models/connect';
 import { FromItemLayout } from '@/general';
 import { GenerateFormCompoents } from '@/components/FormComponent';
 import _ from 'lodash';
 import * as validator from '@/utils/validator';
-import { constant } from '@/utils';
+import { constant, helpers } from '@/utils';
 const defulatItemLayout_1 = {
   labelCol: {
     span: 8,
@@ -196,20 +196,27 @@ const SysSetting = props => {
   };
   return (
     <PageHeaderWrapper title={false}>
-      <Card title="系统设置" bordered={false}>
-        <Row gutter={[8, 8]}>{generateCols(renderForms.row_1, 12)}</Row>
-        <Row gutter={[8, 8]}>{generateCols(renderForms.row_2, 12)}</Row>
-        <Row gutter={[8, 8]}>{generateCols(renderForms.row_3, 12)}</Row>
-        <Row gutter={[8, 8]}>{generateCols(renderForms.row_4, 12)}</Row>
-        <Row gutter={[8, 8]}>{generateCols(renderForms.row_5, 12, defulatItemLayout_1)}</Row>
-        <Row gutter={[8, 8]}>{generateCols(renderForms.row_6, 12, defulatItemLayout_1)}</Row>
-        <Row gutter={[8, 8]}>{generateCols(renderForms.row_7, 12, defulatItemLayout_2)}</Row>
-        <div style={{ textAlign: 'center' }}>
-          <Button loading={loadingState} onClick={() => okHandle()} type={'primary'} size={'large'} >
-            提交
-          </Button>
-        </div>
-      </Card>
+      <Spin spinning={loadingState} size="large" wrapperClassName="spin">
+        <Card title="系统设置" bordered={false}>
+          <Row gutter={[8, 8]}>{generateCols(renderForms.row_1, 12)}</Row>
+          <Row gutter={[8, 8]}>{generateCols(renderForms.row_2, 12)}</Row>
+          <Row gutter={[8, 8]}>{generateCols(renderForms.row_3, 12)}</Row>
+          <Row gutter={[8, 8]}>{generateCols(renderForms.row_4, 12)}</Row>
+          <Row gutter={[8, 8]}>{generateCols(renderForms.row_5, 12, defulatItemLayout_1)}</Row>
+          <Row gutter={[8, 8]}>{generateCols(renderForms.row_6, 12, defulatItemLayout_1)}</Row>
+          <Row gutter={[8, 8]}>{generateCols(renderForms.row_7, 12, defulatItemLayout_2)}</Row>
+          <div style={{ textAlign: 'center' }}>
+            <Button
+              loading={loadingState}
+              onClick={() => okHandle()}
+              type={'primary'}
+              size={'large'}
+            >
+              提交
+            </Button>
+          </div>
+        </Card>
+      </Spin>
     </PageHeaderWrapper>
   );
 };

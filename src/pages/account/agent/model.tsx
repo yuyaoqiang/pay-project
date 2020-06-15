@@ -66,6 +66,9 @@ const Model: ModelType = {
     *syncReceiveOrderChanne({ payload }, { call, put }) {
       return yield call(Serivce.syncReceiveOrderChanne, payload.params);
     },
+    *findGatheringChannelRateByMerchantId({ payload }, { call, put }) {
+      return yield call(Serivce.findGatheringChannelRateByMerchantId, payload.params);
+    },
   },
 
   reducers: {},

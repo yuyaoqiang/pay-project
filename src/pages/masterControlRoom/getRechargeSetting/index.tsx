@@ -1,6 +1,6 @@
 import { connect } from 'dva';
 import React, { useState, useEffect } from 'react';
-import { message, Card, Form, Button, Input, Col, Row, Select } from 'antd';
+import { message, Card, Form, Button, Input, Col, Row, Spin } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { ConnectState } from '@/models/connect';
 import { FromItemLayout } from '@/general';
@@ -24,8 +24,8 @@ const GetRechargeSetting = props => {
   const [configData, setConfigData] = useState({
     cantContinuousSubmit: undefined,
     id: undefined,
-    latelyUpdateTime:undefined,
-    orderEffectiveDuration:undefined,
+    latelyUpdateTime: undefined,
+    orderEffectiveDuration: undefined,
     quickInputAmount: undefined,
     rechargeExplain: undefined,
     rechargeLowerLimit: undefined,
@@ -84,7 +84,7 @@ const GetRechargeSetting = props => {
         defulatVal: configData.returnWaterRateEnabled,
         placeholder: ' ',
         onChange: item => {
-          setConfigData({ ...configData,returnWaterRateEnabled:item });
+          setConfigData({ ...configData, returnWaterRateEnabled: item });
         },
       },
     ],
@@ -103,17 +103,16 @@ const GetRechargeSetting = props => {
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
-      if(!configData.rechargeLowerLimit || !configData.rechargeUpperLimit) {
-        message.error("请填写限额/最低/最高")
+      if (!configData.rechargeLowerLimit || !configData.rechargeUpperLimit) {
+        message.error('请填写限额/最低/最高');
         return;
       }
-      if(configData.returnWaterRateEnabled &&_.isEmpty(configData.returnWaterRate+'')){
-        message.error("请填写返水率")
+      if (configData.returnWaterRateEnabled && _.isEmpty(configData.returnWaterRate + '')) {
+        message.error('请填写返水率');
         return;
       }
       if (configData.returnWaterRateEnabled) {
         fieldsValue.returnWaterRate = configData.returnWaterRate;
-
       }
       const htmlContent = editorState.toHTML();
       if (!htmlContent) {
@@ -142,21 +141,27 @@ const GetRechargeSetting = props => {
   };
   return (
     <PageHeaderWrapper title={false}>
-      <Card title="下单设置" bordered={false}>
-        <Row gutter={[8, 0]}>{generateCols(renderForms.row_1, 12, { labelCol:{ span: 14 } ,wrapperCol:{ span: 8}})}</Row>
-        <Row gutter={[8, 0]}>{generateCols(renderForms.row_2, 12, defulatItemLayout_0)}</Row>
-        <Row gutter={[8, 0]}>
-          <Col key={`row-15`} span={9}>
-            <GenerateFormCompoents
-              formItems={[renderForms.row_3[0]]}
-              form={form}
-              itemLayout={{ labelCol:{ span: 14 } ,wrapperCol:{ span: 8}}}
-            />
-          </Col>
-          {helpers.isJudge(configData.returnWaterRateEnabled)(
-            <Col key={`row-16`} span={12}>
-              <Form.Item label="充值反水率" labelCol={{ span: 14 }} wrapperCol={{ span: 8}}>
-                <Input
+      <Spin spinning={loadingState} size="large" wrapperClassName="spin">
+        <Card title="下单设置" bordered={false}>
+          <Row gutter={[8, 0]}>
+            {generateCols(renderForms.row_1, 12, {
+              labelCol: { span: 14 },
+              wrapperCol: { span: 8 },
+            })}
+          </Row>
+          <Row gutter={[8, 0]}>{generateCols(renderForms.row_2, 12, defulatItemLayout_0)}</Row>
+          <Row gutter={[8, 0]}>
+            <Col key={`row-15`} span={9}>
+              <GenerateFormCompoents
+                formItems={[renderForms.row_3[0]]}
+                form={form}
+                itemLayout={{ labelCol: { span: 14 }, wrapperCol: { span: 8 } }}
+              />
+            </Col>
+            {helpers.isJudge(configData.returnWaterRateEnabled)(
+              <Col key={`row-16`} span={12}>
+                <Form.Item label="充值反水率" labelCol={{ span: 14 }} wrapperCol={{ span: 8 }}>
+                  <Input
                     className="site-input-right"
                     value={configData.returnWaterRate}
                     onChange={item =>
@@ -169,13 +174,13 @@ const GetRechargeSetting = props => {
                     suffix={'%'}
                     placeholder="最大值"
                   />
-              </Form.Item>
-            </Col>,
-            null,
-          )}
-        </Row>
-        <Row>
-        <Col key={`row-16`} span={12}>
+                </Form.Item>
+              </Col>,
+              null,
+            )}
+          </Row>
+          <Row>
+            <Col key={`row-16`} span={12}>
               <Form.Item label="限额/最低/最高" labelCol={{ span: 10 }} wrapperCol={{ span: 10 }}>
                 <Input.Group compact>
                   <Input
@@ -212,10 +217,10 @@ const GetRechargeSetting = props => {
                 </Input.Group>
               </Form.Item>
             </Col>
-        </Row>
-        <Row gutter={[8, 0]}>
+          </Row>
+          <Row gutter={[8, 0]}>
             <Col span={24}>
-              <Form.Item label={'公告内容'} labelCol={{ span: 5 }} wrapperCol={{ span: 17}}>
+              <Form.Item label={'公告内容'} labelCol={{ span: 5 }} wrapperCol={{ span: 17 }}>
                 <div className="my-component" style={{ border: '1px solid #d9d9d9' }}>
                   <BraftEditor
                     value={editorState}
@@ -226,12 +231,18 @@ const GetRechargeSetting = props => {
               </Form.Item>
             </Col>
           </Row>
-        <div style={{ textAlign: 'center' }}>
-          <Button loading={loadingState} onClick={() => okHandle()} type={'primary'} size={'large'}>
-            提交
-          </Button>
-        </div>
-      </Card>
+          <div style={{ textAlign: 'center' }}>
+            <Button
+              loading={loadingState}
+              onClick={() => okHandle()}
+              type={'primary'}
+              size={'large'}
+            >
+              提交
+            </Button>
+          </div>
+        </Card>
+      </Spin>
     </PageHeaderWrapper>
   );
 };

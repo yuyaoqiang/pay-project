@@ -4,7 +4,7 @@ import Debounce from 'lodash-decorators/debounce';
 class Service {
   @Debounce(constant.DEBOUNCE_TIME, { leading: true })
   static list(params) {
-    return request.get('/dictconfig/findDictTypeByPage', {
+    return request.get('/role/account/find', {
       params,
     });
   }

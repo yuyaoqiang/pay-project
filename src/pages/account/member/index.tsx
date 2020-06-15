@@ -22,7 +22,9 @@ const Agent = props => {
   const [bankCardVisible, handleBankCardModalVisible] = useState<boolean>(false);
   const [codeQuotaVisible, handleCodeQuotaModalVisible] = useState<boolean>(false);
   const [virtualWalletVisible, handleVirtualWalletModalVisible] = useState<boolean>(false);
-  const [adjustCashDepositModalVisible, handleAdjustCashDepositModalVisible] = useState<boolean>(false);
+  const [adjustCashDepositModalVisible, handleAdjustCashDepositModalVisible] = useState<boolean>(
+    false,
+  );
   const [updatePwdModalVisible, handleUpdatePwdModalVisible] = useState<boolean>(false);
   const [updateMoneyPwdModalVisible, handleUpdateMoneyPwdModalVisible] = useState<boolean>(false);
   const [configChannleModalVisible, handleConfigChannleModalVisible] = useState<boolean>(false);
@@ -47,12 +49,16 @@ const Agent = props => {
       title: '姓名',
       dataIndex: 'realName',
       align: 'center',
+      width: '100',
+      ellipsis: true,
     },
     {
       title: '电话',
       dataIndex: 'mobile',
       align: 'center',
       hideInSearch: true,
+      width: '100',
+      ellipsis: true,
     },
     {
       title: '保证金',
@@ -80,6 +86,8 @@ const Agent = props => {
       title: '邀请人',
       dataIndex: 'inviterUserName',
       align: 'center',
+      width: '80',
+      ellipsis: true,
       hideInSearch: true,
     },
     {
@@ -125,6 +133,29 @@ const Agent = props => {
           <Button
             type={'primary'}
             size={'small'}
+            style={{ margin: 2 }}
+            onClick={() => {
+              getRcord(record);
+              handleConfigChannleModalVisible(true);
+            }}
+          >
+            配置接单通道
+          </Button>
+          <Button
+            type={'primary'}
+            size={'small'}
+            style={{ margin: 2 }}
+            onClick={() => {
+              getRcord(record);
+              handleAdjustCashDepositModalVisible(true);
+            }}
+          >
+            调整保证金
+          </Button>
+          <Button
+            type={'primary'}
+            size={'small'}
+            style={{ margin: 2 }}
             onClick={() => {
               getRcord(record);
               handleModalVisible(true);
@@ -132,21 +163,9 @@ const Agent = props => {
           >
             修改
           </Button>
-          <Divider type="vertical" />
           <Popover
             content={
               <div style={{ maxWidth: 120, textAlign: 'center', padding: 4 }}>
-                <Button
-                  type={'primary'}
-                  size={'small'}
-                  style={{ margin: 2 }}
-                  onClick={() => {
-                    getRcord(record);
-                    handleConfigChannleModalVisible(true);
-                  }}
-                >
-                  配置接单通道
-                </Button>
                 <Button
                   type={'primary'}
                   size={'small'}
@@ -169,17 +188,7 @@ const Agent = props => {
                 >
                   修改资金密码
                 </Button>
-                <Button
-                  type={'primary'}
-                  size={'small'}
-                  style={{ margin: 2 }}
-                  onClick={() => {
-                    getRcord(record);
-                    handleAdjustCashDepositModalVisible(true);
-                  }}
-                >
-                  调整保证金
-                </Button>
+
                 <Button
                   type={'primary'}
                   size={'small'}
@@ -384,15 +393,17 @@ const Agent = props => {
         defulat={rcord}
         hasModity={hasModity}
       />
-      <AdjustCashDeposit
-        onCancel={() => handleAdjustCashDepositModalVisible(false)}
-        modalVisible={adjustCashDepositModalVisible}
-        confirmLoading={props.loadingState}
-        defulat={rcord}
-        actionRef={actionRef}
-        dispatch={dispatch}
-        hasModity={hasModity}
-      />
+      {adjustCashDepositModalVisible && (
+        <AdjustCashDeposit
+          onCancel={() => handleAdjustCashDepositModalVisible(false)}
+          modalVisible={adjustCashDepositModalVisible}
+          confirmLoading={props.loadingState}
+          defulat={rcord}
+          actionRef={actionRef}
+          dispatch={dispatch}
+          hasModity={hasModity}
+        />
+      )}
       <CodeQuota
         onCancel={() => handleCodeQuotaModalVisible(false)}
         modalVisible={codeQuotaVisible}
@@ -404,7 +415,9 @@ const Agent = props => {
       />
       {configChannleModalVisible && (
         <ConfigChannle
-          handleModalVisible={()=>{handleConfigChannleModalVisible(false)}}
+          handleModalVisible={() => {
+            handleConfigChannleModalVisible(false);
+          }}
           onCancel={() => handleConfigChannleModalVisible(false)}
           modalVisible={configChannleModalVisible}
           confirmLoading={props.loadingState}
@@ -414,7 +427,7 @@ const Agent = props => {
           dispatch={dispatch}
         />
       )}
-       {bankCardVisible && (
+      {bankCardVisible && (
         <BankCard
           onCancel={() => handleBankCardModalVisible(false)}
           modalVisible={bankCardVisible}
@@ -424,7 +437,7 @@ const Agent = props => {
           dispatch={dispatch}
         />
       )}
-       {virtualWalletVisible && (
+      {virtualWalletVisible && (
         <VirtualWallet
           onCancel={() => handleVirtualWalletModalVisible(false)}
           modalVisible={virtualWalletVisible}
