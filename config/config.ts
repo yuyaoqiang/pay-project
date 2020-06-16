@@ -191,6 +191,11 @@ export default {
                   path: '/record/settlement',
                   component: './record/settlement',
                 },
+                {
+                  name: 'chukanBank',
+                  path: '/record/chukanBank',
+                  component: './record/chukanBank',
+                },
               ]
             },
             {

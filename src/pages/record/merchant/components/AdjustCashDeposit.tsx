@@ -81,7 +81,7 @@ const UpdatePsd: React.FC<ModalFormProps> = props => {
       if (data.data) {
         data.data.map(item => {
           arr.push({
-            type: item.id,
+            type: item.channelId,
             name: item.channelName,
           });
         });

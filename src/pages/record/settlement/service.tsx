@@ -8,7 +8,12 @@ class Service {
       params,
     });
   }
-
+  @Debounce(constant.DEBOUNCE_TIME, { leading: true })
+  static findChukanBankByPage(params) {
+    return request.get('merchant/findChukanBankByPage', {
+      params,
+    });
+  }
   @Debounce(constant.DEBOUNCE_TIME, { leading: true })
   static settlementApproved(params) {
     return request.get('/merchant/settlementApproved', {

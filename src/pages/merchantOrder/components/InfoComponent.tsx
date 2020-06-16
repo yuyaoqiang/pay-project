@@ -50,6 +50,7 @@ const InfoComponent: React.FC<ModalFormProps> = props => {
     setNoBounty(e.target.checked);
   };
   const okHandle = () => {
+    setNoBounty(false);
     Modal.confirm({
       title: '提示',
       content: (

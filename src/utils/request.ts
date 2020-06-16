@@ -43,6 +43,7 @@ request.interceptors.response.use(async response => {
     return Promise.reject(response);
   }
   if (data && data.code === 500) {
+    message.error(data.msg);
     return Promise.reject(response);
   }
   if (data && data.code === 999) {
@@ -50,7 +51,7 @@ request.interceptors.response.use(async response => {
     router.push("/user/login")
     return Promise.reject(response);
   }
-  message.error(data.message);
+  message.error(data.message||data.msg);
   return Promise.reject(response);
 });
 

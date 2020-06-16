@@ -61,9 +61,10 @@ const Code = props => {
       align: 'center',
       render: (_, record: any) => (
         <div>
-           <Button
+          <Button
             size={'small'}
-            type={"primary"}
+            type={'primary'}
+            style={{margin:2}}
             onClick={() => {
               getRcord(record);
               handleRoleVisible(true);
@@ -71,9 +72,9 @@ const Code = props => {
           >
             账号列表
           </Button>
-          <Divider type={'vertical'} />
           <Button
             size={'small'}
+            style={{margin:2}}
             onClick={() => {
               getRcord(record);
               handleTreeVisible(true);
@@ -81,26 +82,35 @@ const Code = props => {
           >
             角色权限
           </Button>
-          <Divider type={'vertical'} />
-          <Button
+
+          {helpers.isJudge(record.name === 'admin')(
+            null,
+            <Button
             size={'small'}
+            style={{margin:2}}
             onClick={() => {
+              handleModalVisible(true);
+              handleHasModity(true);
               getRcord(record);
             }}
           >
             编辑
           </Button>
-          <Divider type={'vertical'} />
-          <Button
-            type={'danger'}
-            loading={delLoading}
-            size={'small'}
-            onClick={() => {
-              del({ id: record.id });
-            }}
-          >
-            删除
-          </Button>
+          )}
+          {helpers.isJudge(record.name === 'admin')(
+            null,
+            <Button
+              type={'danger'}
+              style={{margin:2}}
+              loading={delLoading}
+              size={'small'}
+              onClick={() => {
+                del({ id: record.id });
+              }}
+            >
+              删除
+            </Button>
+          )}
         </div>
       ),
     },
@@ -111,14 +121,14 @@ const Code = props => {
       type: 'permission/accountAll',
       payload: { params },
     }).then(data => {
-      let lists=[];
-      data.data.map(item=>{
+      let lists = [];
+      data.data.map(item => {
         lists.push({
-          label:item.username,
-          value:item.id,
-        })
-      })
-      setAccounts(lists)
+          label: item.username,
+          value: item.id,
+        });
+      });
+      setAccounts(lists);
     });
   };
   const getDatas = () => {

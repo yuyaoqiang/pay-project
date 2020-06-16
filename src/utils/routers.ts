@@ -201,6 +201,12 @@ export default [
         name: '商户结算',
         hideInMenu: true,
       },
+      {
+        id:'829',
+        path: 'chukanBank',
+        name: '下发卡管理',
+        hideInMenu: true,
+      },
     ],
   },
   {

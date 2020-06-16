@@ -19,10 +19,11 @@ const Settlement = props => {
   const [adjustCashDeposit, handleAdjustCashDeposit] = useState<boolean>(false);
   const [hasModity, handleHasModity] = useState<boolean>(false);
   const [rcord, setRcord] = useState({});
+  const [chukanBanks, setChukanBanks] = useState([]);
   const actionRef = useRef<ActionType>();
   const [dateRange, setDateRange] = useState({
     hasRadio: '',
-    date: [moment(),moment()],
+    date: [moment(), moment()],
   });
   const { dispatch, common } = props;
   const changeDateType = dateRange => {
@@ -200,19 +201,33 @@ const Settlement = props => {
       },
     },
   ];
-  // if (row.state == '1') {
-  //   return [ '<button type="button" class="withdraw-approval-btn btn btn-outline-primary btn-sm" style="margin-right: 4px;">进行审核</button>' ].join('');
-  // } else if (row.state == '2') {
-  //   return [ '<button type="button" class="confirm-credited-btn btn btn-outline-primary btn-sm" style="margin-right: 4px;">确认到帐</button>',
-  //       '<button type="button" class="not-approved-btn btn btn-outline-secondary btn-sm">审核不通过</button>' ].join('');
-  // }
+
   useEffect(() => {
     findMerchantSettlementState();
+    findChukanBankByPage();
   }, []);
   const findMerchantSettlementState = () => {
     dispatch({
       type: 'common/findMerchantSettlementState',
       payload: {},
+    });
+  };
+  const findChukanBankByPage = () => {
+    dispatch({
+      type: 'settlement/findChukanBankByPage',
+      payload: { params: { pageNum: '1', pageSize: '9999' } },
+    }).then(res => {
+      let arr = [];
+      const data = res.data.data;
+      if (data) {
+        data.map(item => {
+          arr.push({
+            name: `${item.bankName}-${item.accountName}-${item.accountNumber}`,
+            type: item.id,
+          });
+        });
+      }
+      setChukanBanks(arr);
     });
   };
   const getDatas = params => {
@@ -272,6 +287,7 @@ const Settlement = props => {
         defulat={rcord}
         dispatch={dispatch}
         actionRef={actionRef}
+        chukanBanks={chukanBanks}
       />
     </PageHeaderWrapper>
   );

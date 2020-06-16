@@ -19,7 +19,7 @@ export interface ModelType {
 const initState = {};
 
 const Model: ModelType = {
-  namespace: 'settlement',
+  namespace: 'chukanBank',
 
   state: initState,
 
@@ -29,15 +29,6 @@ const Model: ModelType = {
     },
     *add({ payload }, { call, put }) {
       return yield call(Serivce.add, payload.params);
-    },
-    *settlementApproved({ payload }, { call, put }) {
-      return yield call(Serivce.settlementApproved, payload.params);
-    },
-    *findChukanBankByPage({ payload }, { call, put }) {
-      return yield call(Serivce.findChukanBankByPage, payload.params);
-    },
-    *settlementNotApproved({ payload }, { call, put }) {
-      return yield call(Serivce.settlementNotApproved, payload.params);
     },
     *del({ payload }, { call, put }) {
       return yield call(Serivce.del, payload.params);

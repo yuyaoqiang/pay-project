@@ -56,8 +56,8 @@ const UpdatePsd: React.FC<ModalFormProps> = props => {
         { type: '', name: '请选择' },
         { type: '8', name: '手工加保证金' },
         { type: '9', name: '手工减保证金' },
-        { type: '19', name: '补单加可提保证金' },
-        { type: '20', name: '补单减可提保证金' },
+        { type: '19', name: '补单加保证金' },
+        { type: '20', name: '补单减保证金' },
       ],
       placeholder: '请选择',
     },
@@ -91,7 +91,7 @@ const UpdatePsd: React.FC<ModalFormProps> = props => {
       if (data.data) {
         data.data.map(item => {
           arr.push({
-            type: item.id,
+            type: item.channelId,
             name: item.channelName,
           });
         });
