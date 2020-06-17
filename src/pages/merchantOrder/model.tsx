@@ -40,6 +40,9 @@ const Model: ModelType = {
     *resendNotice({ payload }, { call, put }) {
       return yield call(Serivce.resendNotice, payload.params);
     },
+    *cancelOrder({ payload }, { call, put }) {
+      return yield call(Serivce.cancelOrder, payload.params);
+    },
 
     *cancelOrderRefund({ payload }, { call, put }) {
       return yield call(Serivce.cancelOrderRefund, payload.params);

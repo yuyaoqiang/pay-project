@@ -68,7 +68,7 @@ const AddUpDataComponent: React.FC<ModalFormProps> = props => {
       if (hasModity) {
         fieldsValue.id = defulat.id;
       }
-      onSubmit(fieldsValue);
+      onSubmit({...defulat,...fieldsValue} );
     });
   };
   const { hasModity } = props;

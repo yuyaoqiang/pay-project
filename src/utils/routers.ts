@@ -62,27 +62,32 @@ export default [
     path: 'statistics',
     name: '统计管理',
     hideInMenu: true,
+    id:'824',
     meta: {
       title: '统计管理',
       icon: 'statistics',
     },
     children: [
       {
+        id:'825',
         path: 'tradeReport',
         name: '平台报表',
         hideInMenu: true,
       },
       {
+        id:'826',
         path: 'channelTradeReport',
         name: '通道报表',
         hideInMenu: true,
       },
       {
+        id:'827',
         path: 'merchantTradeReport',
         name: '商户报表',
         hideInMenu: true,
       },
       {
+        id:'828',
         path: 'userTradeReport',
         name: '用户报表',
         hideInMenu: true,
@@ -236,10 +241,10 @@ export default [
   {
     id: '701',
     path: 'logManger',
-    name: '日记管理',
+    name: '日志管理',
     hideInMenu: true,
     meta: {
-      title: '日记管理',
+      title: '日志管理',
       icon: 'logManger',
     },
     children: [

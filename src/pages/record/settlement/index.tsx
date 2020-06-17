@@ -113,6 +113,7 @@ const Settlement = props => {
             return {
               type: m.dictItemCode,
               name: m.dictItemName,
+              status: helpers.isJudge(m.dictItemName === '已到账')('Success', 'Error'),
             };
           }),
         ];
@@ -176,8 +177,7 @@ const Settlement = props => {
                   type={'primary'}
                   size={'small'}
                   onClick={() => {
-                    getRcord(record);
-                    handleAdjustCashDeposit(true);
+                    ok(record);
                   }}
                 >
                   确认到帐
@@ -202,6 +202,22 @@ const Settlement = props => {
     },
   ];
 
+  const ok = params => {
+    const { id } = params;
+    Modal.confirm({
+      title: '提示',
+      content: `确认是已到帐了吗?`,
+      onOk: () => {
+        return dispatch({
+          type: 'settlement/settlementConfirmCredited',
+          payload: { params: { id } },
+        }).then(data => {
+          message.success(constant.alertMessage.DLE_SUCCESS);
+          actionRef.current?.reload();
+        });
+      },
+    });
+  };
   useEffect(() => {
     findMerchantSettlementState();
     findChukanBankByPage();

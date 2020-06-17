@@ -28,6 +28,13 @@ class Service {
   }
 
   @Debounce(constant.DEBOUNCE_TIME, { leading: true })
+  static cancelOrder(params) {
+    return request.get('/merchantOrder/cancelOrder', {
+      params,
+    });
+  }
+
+  @Debounce(constant.DEBOUNCE_TIME, { leading: true })
   static cancelOrderRefund(params) {
     return request.get('/merchantOrder/cancelOrderRefund', {
       params,

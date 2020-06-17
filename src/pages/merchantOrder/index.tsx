@@ -1,6 +1,6 @@
 import { connect } from 'dva';
 import React, { useState, useRef } from 'react';
-import { Button, message, Card, Spin } from 'antd';
+import { Button, message, Card, Spin, Modal } from 'antd';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from './data';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
@@ -8,7 +8,7 @@ import { ConnectState } from '@/models/connect';
 import { BeforeCurrentDateComponent } from '@/components/DateComponent';
 import InsertModityComponent from './components/InsertModityComponent';
 import InfoComponent from './components/InfoComponent';
-import { helpers, utils } from '@/utils';
+import { helpers, utils, constant } from '@/utils';
 import _ from 'lodash';
 import moment from 'moment';
 import styles from './style.less';
@@ -17,7 +17,7 @@ const MerchantOrder = props => {
     hasRadio: '',
     date: [moment(), moment()],
   });
-
+  const [noBounty, setNoBounty] = useState(false);
   const [modalVisible, handleModalVisible] = useState<boolean>(false);
   const [data, setData] = useState<any>({});
   const [infoModalVisible, handleInfoModalVisible] = useState<boolean>(false);
@@ -69,6 +69,7 @@ const MerchantOrder = props => {
           <a
             onClick={() => {
               getRcord(rcord);
+              setNoBounty(false);
               handleInfoModalVisible(true);
             }}
           >
@@ -291,7 +292,7 @@ const MerchantOrder = props => {
             reslut = m;
           }
         });
-        return reslut.dictItemName;
+      return helpers.isJudge(reslut.dictItemName=="通知成功")(<span style={{color:'green'}}>{reslut.dictItemName}</span>,<span style={{color:'red'}}>{reslut.dictItemName}</span>);
       },
     },
     {
@@ -321,7 +322,7 @@ const MerchantOrder = props => {
               type={'danger'}
               size={'small'}
               onClick={() => {
-                getRcord(record);
+                dele(record);
               }}
             >
               取消订单
@@ -347,7 +348,22 @@ const MerchantOrder = props => {
       ),
     },
   ];
-
+  const dele = params => {
+    const { id } = params;
+    Modal.confirm({
+      title: '提示',
+      content: `确认要删除吗？`,
+      onOk: () => {
+        return dispatch({
+          type: 'merchantOrder/cancelOrder',
+          payload: { params: { id } },
+        }).then(data => {
+          message.success(constant.alertMessage.DLE_SUCCESS);
+          actionRef.current?.reload();
+        });
+      },
+    });
+  };
   const getDatas = params => {
     return dispatch({
       type: 'merchantOrder/list',
@@ -390,6 +406,7 @@ const MerchantOrder = props => {
   return (
     <>
       <PageHeaderWrapper title={false}>
+        <Spin spinning={props.loadingState}>
         <ProTable<TableListItem>
           rowKey={'id'}
           actionRef={actionRef}
@@ -431,6 +448,8 @@ const MerchantOrder = props => {
             return <Card>{`已支付总计：${data.statistics || 0}元`}</Card>;
           }}
         />
+        </Spin>
+
         {modalVisible && (
           <InsertModityComponent
             onSubmit={value => {
@@ -451,6 +470,8 @@ const MerchantOrder = props => {
             defulat={rcord}
             dispatch={dispatch}
             actionRef={actionRef}
+            noBounty={noBounty}
+            setNoBounty={setNoBounty}
           />
         )}
       </PageHeaderWrapper>

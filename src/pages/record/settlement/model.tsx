@@ -42,6 +42,9 @@ const Model: ModelType = {
     *del({ payload }, { call, put }) {
       return yield call(Serivce.del, payload.params);
     },
+    *settlementConfirmCredited({ payload }, { call, put }) {
+      return yield call(Serivce.settlementConfirmCredited, payload.params);
+    },
   },
 
   reducers: {},

@@ -55,6 +55,11 @@ const UpdatePsd = props => {
       align: 'center',
     },
     {
+      title: '入款总额',
+      dataIndex: 'payTotalAmount',
+      align: 'center',
+    },
+    {
       title: '操作',
       dataIndex: 'option',
       align: 'center',

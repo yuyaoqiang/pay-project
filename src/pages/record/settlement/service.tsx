@@ -38,5 +38,11 @@ class Service {
       params,
     });
   }
+  @Debounce(constant.DEBOUNCE_TIME, { leading: true })
+  static settlementConfirmCredited(params) {
+    return request.get('/merchant/settlementConfirmCredited', {
+      params,
+    });
+  }
 }
 export default Service;

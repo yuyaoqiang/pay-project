@@ -17,15 +17,15 @@ import * as validator from '@/utils/validator';
 import _ from 'lodash';
 import img from '@/assets/1.png';
 import { helpers } from '@/utils';
-
+let noBounty=false
 const InfoComponent: React.FC<ModalFormProps> = props => {
   const [noteVisiabel, setNoteVisiabel] = useState(false);
   const [supplementOrderVisiable, setSupplementOrderVisiable] = useState(false);
   const [okLoading, setOkLoading] = useState(false);
-  const [noBounty, setNoBounty] = useState(false);
   const [delLoading, setDelLoading] = useState(false);
   const [noteLoading, setNoteLoading] = useState(false);
-  const { modalVisible, form, onCancel, confirmLoading, actionRef, defulat = {}, dispatch } = props;
+  const { confirmLoading, actionRef, defulat = {}, dispatch } = props;
+  const { modalVisible, form, onCancel,setNoBounty } = props;
   const renderItems = [
     {
       type: 'textarea',
@@ -47,10 +47,9 @@ const InfoComponent: React.FC<ModalFormProps> = props => {
     },
   ];
   const onChange = e => {
-    setNoBounty(e.target.checked);
+    noBounty = e.target.checked;
   };
   const okHandle = () => {
-    setNoBounty(false);
     Modal.confirm({
       title: '提示',
       content: (
@@ -202,7 +201,7 @@ const InfoComponent: React.FC<ModalFormProps> = props => {
       });
     });
   };
-
+console.log(noBounty)
   return (
     <>
       <Modal
@@ -371,6 +370,7 @@ const InfoComponent: React.FC<ModalFormProps> = props => {
                 loading={okLoading}
                 type={'primary'}
                 onClick={() => {
+                  noBounty= false;
                   okHandle();
                 }}
               >
@@ -405,6 +405,7 @@ const InfoComponent: React.FC<ModalFormProps> = props => {
                 style={{ marginRight: 5 }}
                 type={'primary'}
                 onClick={() => {
+                  noBounty= false;
                   confirmToPaidWithCancelOrderRefund();
                 }}
               >
@@ -438,6 +439,7 @@ const InfoComponent: React.FC<ModalFormProps> = props => {
                 style={{ marginRight: 5 }}
                 type={'primary'}
                 onClick={() => {
+                  noBounty= false;
                   confirmToPaidWithUnconfirmedAutoFreeze();
                 }}
               >
@@ -465,6 +467,7 @@ const InfoComponent: React.FC<ModalFormProps> = props => {
                 style={{ marginRight: 5 }}
                 type={'primary'}
                 onClick={() => {
+                  noBounty= false;
                   okHandle();
                 }}
               >

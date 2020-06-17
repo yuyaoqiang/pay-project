@@ -436,17 +436,17 @@ const Agent = props => {
         defulat={rcord}
         hasModity={hasModity}
       />
-      {adjustCashDepositModalVisible && (
-        <AdjustCashDeposit
-          onCancel={() => handleAdjustCashDepositModalVisible(false)}
-          modalVisible={adjustCashDepositModalVisible}
-          confirmLoading={props.loadingState}
-          defulat={rcord}
-          actionRef={actionRef}
-          dispatch={dispatch}
-          hasModity={hasModity}
-        />
-      )}
+     {
+       adjustCashDepositModalVisible&&<AdjustCashDeposit
+        onCancel={() => handleAdjustCashDepositModalVisible(false)}
+        modalVisible={adjustCashDepositModalVisible}
+        confirmLoading={props.loadingState}
+        defulat={rcord}
+        actionRef={actionRef}
+        dispatch={dispatch}
+        hasModity={hasModity}
+      />
+     }
       <CodeQuota
         onCancel={() => handleCodeQuotaModalVisible(false)}
         modalVisible={codeQuotaVisible}
