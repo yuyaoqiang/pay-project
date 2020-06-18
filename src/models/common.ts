@@ -29,7 +29,7 @@ export interface CommonModelType {
     payNoticeState: any[]; // 通知状态
     orderConfirmWay: any[]; //
     merchantAccountType:any[] // 商户类型
-    accountChangeType:any[] // 日记账变类型
+    accountChangeType:any[] // 日志账变类型
   };
   effects: {
     [rondom: string]: Effect;

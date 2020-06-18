@@ -37,7 +37,7 @@ const MerchantOrder = props => {
     },
     {
       title: '商户',
-      dataIndex: 'merchantName',
+      dataIndex: 'merchantId',
       ellipsis: true,
       align: 'center',
       hideInTable: true,
@@ -114,7 +114,7 @@ const MerchantOrder = props => {
     },
     {
       title: '通道',
-      dataIndex: 'gatheringChannelName',
+      dataIndex: 'channelId',
       ellipsis: true,
       align: 'center',
       hideInTable: true,
@@ -271,7 +271,7 @@ const MerchantOrder = props => {
           ...list.map(m => {
             return {
               type: m.id,
-              name: m.merchantName,
+              name: m.dictItemName,
               status: m.dictItemCode == 2 ? true : false,
             };
           }),
@@ -352,7 +352,7 @@ const MerchantOrder = props => {
     const { id } = params;
     Modal.confirm({
       title: '提示',
-      content: `确认要删除吗？`,
+      content: `确认要取消订单吗？`,
       onOk: () => {
         return dispatch({
           type: 'merchantOrder/cancelOrder',

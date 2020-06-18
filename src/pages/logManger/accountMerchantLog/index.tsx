@@ -34,7 +34,6 @@ const Agent = props => {
       title: '订单号',
       dataIndex: 'orderNo',
       align: 'center',
-      hideInSearch:true,
     },
     {
       title: '帐变类型',
@@ -116,7 +115,7 @@ const Agent = props => {
       <ProTable<TableListItem>
         rowKey="id"
         actionRef={actionRef}
-        headerTitle="商户账变日记"
+        headerTitle="商户账变日志"
         request={params => {
           const { current: pageNum, pageSize, ...rest } = params;
           params = { pageNum, pageSize, ...rest };

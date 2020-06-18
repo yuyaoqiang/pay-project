@@ -110,7 +110,7 @@ const Agent = props => {
       <ProTable<TableListItem>
         rowKey="id"
         actionRef={actionRef}
-        headerTitle="操作日记"
+        headerTitle="操作日志"
         request={params => {
           const { current: pageNum, pageSize, ...rest } = params;
           params = { pageNum, pageSize, ...rest };

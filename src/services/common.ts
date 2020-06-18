@@ -69,17 +69,17 @@ class CommonService {
   static findGatheringCodeState() {
     return request.get('/dictconfig/findDictItemInCache?dictTypeCode=gatheringCodeState');
   }
-  // 日记-账变状态
+  // 日志-账变状态
   @Debounce(constant.DEBOUNCE_TIME, { leading: true })
   static findaccountChangeType() {
     return request.get('/dictconfig/findDictItemInCache?dictTypeCode=accountChangeType');
   }
-  // 日记-账变状态
+  // 日志-账变状态
   @Debounce(constant.DEBOUNCE_TIME, { leading: true })
   static findMerchantAccountChangeType() {
     return request.get('/dictconfig/findDictItemInCache?dictTypeCode=merchantAccountChangeType');
   }
-  // 日记-账变状态
+  // 日志-账变状态
   @Debounce(constant.DEBOUNCE_TIME, { leading: true })
   static findLoginState() {
     return request.get('/dictconfig/findDictItemInCache?dictTypeCode=loginState');

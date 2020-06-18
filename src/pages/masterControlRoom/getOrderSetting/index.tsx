@@ -124,15 +124,6 @@ const GetOrderSetting = props => {
         defulatVal: configData.cashPledge,
         placeholder: '该项为必填项',
       },
-      {
-        type: 'input',
-        label: '订单冻结时长',
-        key: 'freezeEffectiveDuration',
-        validator: validator.onlyRequier,
-        defulatVal: configData.freezeEffectiveDuration,
-        placeholder: '该项为必填项',
-        suffix: '分钟',
-      },
     ],
     row_5: [
       {
@@ -189,6 +180,15 @@ const GetOrderSetting = props => {
       },
     ],
     row_8: [
+      {
+        type: 'input',
+        label: '订单冻结时长',
+        key: 'freezeEffectiveDuration',
+        validator: validator.onlyRequier,
+        defulatVal: configData.freezeEffectiveDuration,
+        placeholder: '该项为必填项',
+        suffix: '分钟',
+      },
       {
         type: 'switch',
         label: '接单成功后自动跳转到审核页面',
