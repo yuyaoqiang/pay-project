@@ -37,7 +37,6 @@ const Agent = props => {
   const { dispatch, common } = props;
   useEffect(() => {
     findMerchantAccountType();
-    findAllMerchantAgent();
   }, []);
   const columns: ProColumns<TableListItem>[] = [
     {
@@ -248,12 +247,6 @@ const Agent = props => {
       type: 'common/findMerchantAccountType',
       payload: {},
     }).then(data => data.data);
-  };
-  const findAllMerchantAgent = () => {
-    dispatch({
-      type: 'merchant/findAllMerchantAgent',
-      payload: {},
-    }).then(data => setAllMerchantAgent(data.data));
   };
   const getDatas = params => {
     params.propertie = 'cashDeposit';

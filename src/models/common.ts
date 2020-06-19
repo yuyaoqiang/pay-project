@@ -92,14 +92,14 @@ const CommonModel: CommonModelType = {
       });
       return response;
     },
-    *gatheringCode({ payload }, { call, put }) {
-      const response = yield call(CommonService.findAllGatheringCode);
-      yield put({
-        type: 'saveGatheringCode',
-        payload: response.data,
-      });
-      return response;
-    },
+    // *gatheringCode({ payload }, { call, put }) {
+    //   const response = yield call(CommonService.findAllGatheringCode);
+    //   yield put({
+    //     type: 'saveGatheringCode',
+    //     payload: response.data,
+    //   });
+    //   return response;
+    // },
     *getOrderState({ payload }, { call, put }) {
       const response = yield call(CommonService.findMerchantOrderState);
       yield put({

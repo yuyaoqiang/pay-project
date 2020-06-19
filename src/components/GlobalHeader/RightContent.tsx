@@ -22,7 +22,7 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
   }
   return (
     <div className={className}>
-      <NoticeIconView/>
+      {/* <NoticeIconView/> */}
       <HeaderSystemState />
       <Avatar />
     </div>

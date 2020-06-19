@@ -113,7 +113,7 @@ const Agent = props => {
   return (
     <PageHeaderWrapper title={false}>
       <ProTable<TableListItem>
-        rowKey="id"
+        key="orderNo"
         actionRef={actionRef}
         headerTitle="商户账变日志"
         request={params => {

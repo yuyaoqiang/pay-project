@@ -4,7 +4,7 @@ class UserService {
   //获取用户信息
   @Debounce(constant.DEBOUNCE_TIME, { leading: true })
   static getUserInfo(params) {
-    return request.get('/userAccount/getUserAccountInfo', {
+    return request.get('/merchant/getMerchantInfo', {
       params,
     });
   }

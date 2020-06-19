@@ -9,7 +9,6 @@ export interface SystemInfoModelType {
   namespace: 'systemInfo';
   state: SystemInfoModelState;
   effects: {
-    getSystemMessage: Effect;
     upload: Effect;
   };
   reducers: {
@@ -24,21 +23,6 @@ const SystemInfoModel: SystemInfoModelType = {
   },
 
   effects: {
-    *getSystemMessage({ payload }, { call, put }) {
-      const response = yield call(SystemInfoService.getSystemMessage);
-      let list=[]
-      _.forEach(response.data, function(value, key) {
-        value.content.map(item=>{
-          item.type=key
-          list.push(item)
-        })
-      });
-      yield put({
-        type: 'saveSystemMessage',
-        payload: list,
-      });
-    },
-
     *upload({ payload }, { call, put }) {
       return yield call(SystemInfoService.upload, payload);
     },

@@ -42,7 +42,7 @@ if (ENVIRONMENT === 'pro') {
 export default {
   plugins,
   hash: true,
-  history:'hash',
+  history: 'hash',
   targets: {
     ie: 11,
   },
@@ -82,8 +82,21 @@ export default {
               component: './merchantOrder',
             },
             {
+              path: '/logManger',
+              name: 'logManger',
+              component: './logManger',
+            },
+            {
+              path: '/rateDetails',
+              component: './rateDetails',
+            },
+            {
               path: '/appealRecord',
               component: './appealRecord',
+            },
+            {
+              path: '/merchanStatistics',
+              component: './merchanStatistics',
             },
             {
               path: '/masterControlRoom',
@@ -175,7 +188,7 @@ export default {
                   path: '/account/permission',
                   component: './account/permission',
                 },
-              ]
+              ],
             },
             {
               path: '/record',
@@ -196,7 +209,7 @@ export default {
                   path: '/record/chukanBank',
                   component: './record/chukanBank',
                 },
-              ]
+              ],
             },
             {
               path: '/gathering',
@@ -212,65 +225,35 @@ export default {
                   path: '/gathering/channel',
                   component: './gathering/channel',
                 },
-              ]
+              ],
             },
-            {
-              path: '/logManger',
-              name: 'logManger',
-              routes: [
-                {
-                  name: 'accountChangeLog',
-                  path: '/logManger/accountChangeLog',
-                  component: './logManger/accountChangeLog',
-                },
-                {
-                  name: 'accountMerchantLog',
-                  path: '/logManger/accountMerchantLog',
-                  component: './logManger/accountMerchantLog',
-                },
-                {
-                  name: 'loginLog',
-                  path: '/logManger/loginLog',
-                  component: './logManger/loginLog',
-                },
-                {
-                  name: 'operLog',
-                  path: '/logManger/operLog',
-                  component: './logManger/operLog',
-                },
-                {
-                  name: 'heartbeatLog',
-                  path: '/logManger/heartbeatLog',
-                  component: './logManger/heartbeatLog',
-                },
-              ]
-            },
-            {
-              path: '/statistics',
-              name: 'statistics',
-              routes: [
-                {
-                  name: 'tradeReport',
-                  path: '/statistics/tradeReport',
-                  component: './statistics/tradeReport',
-                },
-                {
-                  name: 'channelTradeReport',
-                  path: '/statistics/channelTradeReport',
-                  component: './statistics/channelTradeReport',
-                },
-                {
-                  name: 'merchantTradeReport',
-                  path: '/statistics/merchantTradeReport',
-                  component: './statistics/merchantTradeReport',
-                },
-                {
-                  name: 'userTradeReport',
-                  path: '/statistics/userTradeReport',
-                  component: './statistics/userTradeReport',
-                },
-              ]
-            },
+
+            // {
+            //   path: '/statistics',
+            //   name: 'statistics',
+            //   routes: [
+            //     {
+            //       name: 'tradeReport',
+            //       path: '/statistics/tradeReport',
+            //       component: './statistics/tradeReport',
+            //     },
+            //     {
+            //       name: 'channelTradeReport',
+            //       path: '/statistics/channelTradeReport',
+            //       component: './statistics/channelTradeReport',
+            //     },
+            //     {
+            //       name: 'merchantTradeReport',
+            //       path: '/statistics/merchantTradeReport',
+            //       component: './statistics/merchantTradeReport',
+            //     },
+            //     {
+            //       name: 'userTradeReport',
+            //       path: '/statistics/userTradeReport',
+            //       component: './statistics/userTradeReport',
+            //     },
+            //   ],
+            // },
             {
               path: '/systemListen',
               name: 'systemListen',
@@ -285,8 +268,7 @@ export default {
                   path: '/systemListen/clean',
                   component: './systemListen/clean',
                 },
-
-              ]
+              ],
             },
             {
               path: '/recharge',
@@ -312,7 +294,7 @@ export default {
                   path: '/recharge/rechargeChannelType',
                   component: './recharge/rechargeChannelType',
                 },
-              ]
+              ],
             },
             {
               path: '/systemManger',
@@ -328,8 +310,65 @@ export default {
                   path: '/systemManger/dict',
                   component: './systemManger/dict',
                 },
-
-              ]
+              ],
+            },
+            {
+              path: '/applySettlement',
+              name: 'applySettlement',
+              routes: [
+                {
+                  name: 'settlementRecord',
+                  path: '/applySettlement/settlementRecord',
+                  component: './applySettlement/settlementRecord',
+                },
+                {
+                  name: 'settlementRecordList',
+                  path: '/applySettlement/settlementRecordList',
+                  component: './applySettlement/settlementRecordList',
+                },
+              ],
+            },
+            {
+              path: '/merchantInfo',
+              name: 'merchantInfo',
+              routes: [
+                {
+                  name: 'info',
+                  path: '/merchantInfo/info',
+                  component: './merchantInfo/info',
+                },
+                {
+                  name: 'banks',
+                  path: '/merchantInfo/banks',
+                  component: './merchantInfo/banks',
+                },
+                {
+                  name: 'interfaceDoc',
+                  path: '/merchantInfo/interfaceDoc',
+                  component: './merchantInfo/interfaceDoc',
+                },
+              ],
+            },
+            {
+              path: '/proxy',
+              name: 'proxy',
+              routes: [
+                {
+                  name: 'agentSubordinate',
+                  path: '/proxy/agentSubordinate',
+                  component: './proxy/agentSubordinate',
+                },
+                {
+                  name: 'levelMerchantOrder',
+                  path: '/proxy/levelMerchantOrder',
+                  component: './proxy/levelMerchantOrder',
+                },
+                {
+                  name: 'proxyStatistics',
+                  path: '/proxy/proxyStatistics',
+                  component: './proxy/proxyStatistics',
+                },
+              ],
             },
             {
               component: './404',
@@ -394,7 +433,7 @@ export default {
   // chainWebpack: webpackPlugin,
   proxy: {
     '/api/': {
-      target: 'http://8.129.189.10:8081',
+      target: 'http://8.129.189.10:8082/',
       changeOrigin: true,
       pathRewrite: { '^/api': '' },
     },

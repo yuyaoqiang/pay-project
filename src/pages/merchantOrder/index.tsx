@@ -310,43 +310,43 @@ const MerchantOrder = props => {
         );
       },
     },
-    {
-      title: '操作',
-      dataIndex: 'option',
-      valueType: 'option',
-      align: 'center',
-      render: (_, record: any) => (
-        <>
-          {helpers.isJudge(record.orderState == '1')(
-            <Button
-              type={'danger'}
-              size={'small'}
-              onClick={() => {
-                dele(record);
-              }}
-            >
-              取消订单
-            </Button>,
-            null,
-          )}
-          {helpers.isJudge(
-            record.orderState == '4' &&
-              (record.payInfo.noticeState == '1' || record.payInfo.noticeState == '3'),
-          )(
-            <Button
-              type={'primary'}
-              size={'small'}
-              onClick={() => {
-                resendNotice(record.id);
-              }}
-            >
-              重发通知
-            </Button>,
-            null,
-          )}
-        </>
-      ),
-    },
+    // {
+    //   title: '操作',
+    //   dataIndex: 'option',
+    //   valueType: 'option',
+    //   align: 'center',
+    //   render: (_, record: any) => (
+    //     <>
+    //       {helpers.isJudge(record.orderState == '1')(
+    //         <Button
+    //           type={'danger'}
+    //           size={'small'}
+    //           onClick={() => {
+    //             dele(record);
+    //           }}
+    //         >
+    //           取消订单
+    //         </Button>,
+    //         null,
+    //       )}
+    //       {helpers.isJudge(
+    //         record.orderState == '4' &&
+    //           (record.payInfo.noticeState == '1' || record.payInfo.noticeState == '3'),
+    //       )(
+    //         <Button
+    //           type={'primary'}
+    //           size={'small'}
+    //           onClick={() => {
+    //             resendNotice(record.id);
+    //           }}
+    //         >
+    //           重发通知
+    //         </Button>,
+    //         null,
+    //       )}
+    //     </>
+    //   ),
+    // },
   ];
   const dele = params => {
     const { id } = params;
@@ -411,19 +411,19 @@ const MerchantOrder = props => {
           rowKey={'id'}
           actionRef={actionRef}
           headerTitle="商户订单列表"
-          toolBarRender={() => [
-            <Button
-              icon="plus"
-              type="primary"
-              onClick={() => {
-                setRcord({});
-                handleHasModity(false);
-                handleModalVisible(true);
-              }}
-            >
-              添加
-            </Button>,
-          ]}
+          // toolBarRender={() => [
+          //   <Button
+          //     icon="plus"
+          //     type="primary"
+          //     onClick={() => {
+          //       setRcord({});
+          //       handleHasModity(false);
+          //       handleModalVisible(true);
+          //     }}
+          //   >
+          //     添加
+          //   </Button>,
+          // ]}
           request={params => {
             const { current: pageNum, pageSize, ...rest } = params;
             params = { pageNum, pageSize, ...rest };

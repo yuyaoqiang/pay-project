@@ -7,7 +7,7 @@ import ProLayout, {
 import React, { useEffect, useState } from 'react';
 import Link from 'umi/link';
 import { Dispatch } from 'redux';
-import { connect } from 'dva';
+import { connect, router } from 'dva';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState, UserModelState } from '@/models/connect';
 import routers from '@/utils/routers';
@@ -32,11 +32,12 @@ export type BasicLayoutContext = { [K in 'location']: BasicLayoutProps[K] } & {
 };
 
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
-  const { dispatch, children, settings,user } = props;
+  const { dispatch, children, settings, user } = props;
+  const [router, setRouter] = useState(routers);
   useEffect(() => {
-    getPermissions();
+    // getPermissions();
     getSystemSetting();
-    getMerchantList();
+    // getMerchantList();
     gatheringChannel();
     gatheringCode();
     getOrderState();
@@ -46,27 +47,16 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     findAppealState();
     findAppealProcessWay();
     findMerchantOrderConfirmWay();
+    filterRouter();
   }, []);
 
-  const [count, setCount] = useState(0);
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCount(count => count + 1);
-      systemMessage();
-    }, 10000);
-    return () => clearInterval(timer);
-  }, []);
+  // const [deepRouters,setDeepRouters]=useState([])
 
-  const [deepRouters,setDeepRouters]=useState([])
-
-  const getPermissions = () => {
-    dispatch({ type: 'user/getPermissions', payload: {} }).then(res=>{
-      setDeepRouters(helpers.permissionsFilter(routers,res.data))
-    })
-  };
-  const systemMessage = () => {
-    dispatch({ type: 'systemInfo/getSystemMessage', payload: {} });
-  };
+  // const getPermissions = () => {
+  //   dispatch({ type: 'user/getPermissions', payload: {} }).then(res=>{
+  //     setDeepRouters(helpers.permissionsFilter(routers,res.data))
+  //   })
+  // };
   const getSystemSetting = (): void => {
     dispatch({ type: 'common/getSystemSetting', payload: {} });
   };
@@ -99,6 +89,16 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   };
   const findAppealType = (): void => {
     dispatch({ type: 'common/findAppealType', payload: {} });
+  };
+  const filterRouter = () => {
+    let filter = [];
+    routers.map(item => {
+      if (user.accountType == 'merchantAgent' && item.id == '9999') {
+        item.hideInMenu = true;
+      }
+      filter.push(item);
+    });
+    setRouter(filter)
   };
   return (
     <ProLayout
@@ -133,7 +133,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
           <span>{route.breadcrumbName}</span>
         );
       }}
-      menuDataRender={() => deepRouters}
+      menuDataRender={() => router}
       rightContentRender={() => <RightContent />}
       {...props}
       {...settings}

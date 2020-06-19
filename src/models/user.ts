@@ -3,7 +3,6 @@ import { Reducer } from 'redux';
 import { getPageQuery } from '@/utils/utils';
 import router from 'umi/router';
 import { UserService } from '@/services';
-import { helpers, routers } from '@/utils';
 export interface CurrentUser {
   [rondom: string]: any;
 }
@@ -64,7 +63,6 @@ const UserModel: UserModelType = {
     *login({ payload }, { call, put }) {
       const response = yield call(UserService.fakeAccountLogin, payload);
       if (response.code === 200) {
-        yield put({ type: 'getPermissions', payload: {} });
         const resp = yield put({ type: 'getUserInfo', payload: {} });
         resp
           .then(res => {

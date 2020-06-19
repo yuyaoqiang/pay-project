@@ -19,11 +19,11 @@ class CommonService {
   static findAllGatheringChannel() {
     return request.get('/gatheringChannel/findAllGatheringChannel');
   }
-  // 收款方式列表
-  @Debounce(constant.DEBOUNCE_TIME, { leading: true })
-  static findAllGatheringCode() {
-    return request.get('/gatheringCode/findAllGatheringCode');
-  }
+  // // 收款方式列表
+  // @Debounce(constant.DEBOUNCE_TIME, { leading: true })
+  // static findAllGatheringCode() {
+  //   return request.get('/gatheringCode/findAllGatheringCode');
+  // }
   // 订单状态
   @Debounce(constant.DEBOUNCE_TIME, { leading: true })
   static findMerchantOrderState() {
