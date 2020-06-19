@@ -34,7 +34,6 @@ request.interceptors.response.use(async response => {
     return response;
   }
   if (data && data.code === 400) {
-    debugger
     message.error(data.msg);
     return Promise.reject(response);
   }

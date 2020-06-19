@@ -1,5 +1,5 @@
 import { connect } from 'dva';
-import React, { useRef,useState,useEffect} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from './data';
 import { BeforeCurrentDateComponent } from '@/components/DateComponent';
@@ -8,11 +8,12 @@ import { ConnectState } from '@/models/connect';
 import { helpers, constant, utils } from '@/utils';
 import moment from 'moment';
 import _ from 'lodash';
+import { Button } from 'antd';
 const Agent = props => {
   const actionRef = useRef<ActionType>();
   const [dateRange, setDateRange] = useState({
     hasRadio: '',
-    date: [moment(),moment()],
+    date: [moment(), moment()],
   });
   const { dispatch, common } = props;
 
@@ -52,7 +53,7 @@ const Agent = props => {
       title: '账变时间',
       dataIndex: 'accountChangeTime',
       align: 'center',
-      hideInSearch:true,
+      hideInSearch: true,
     },
     {
       title: '账变时间',
@@ -72,22 +73,22 @@ const Agent = props => {
     {
       title: '备注',
       dataIndex: 'note',
-      width:150,
-      ellipsis:true,
+      width: 150,
+      ellipsis: true,
       align: 'center',
-      hideInSearch:true,
+      hideInSearch: true,
     },
     {
       title: '账变金额',
       dataIndex: 'accountChangeAmount',
       align: 'center',
-      hideInSearch:true,
+      hideInSearch: true,
     },
     {
       title: '剩余可提现金额',
       dataIndex: 'withdrawableAmount',
       align: 'center',
-      hideInSearch:true,
+      hideInSearch: true,
     },
   ];
 
@@ -110,12 +111,31 @@ const Agent = props => {
       payload: { params },
     }).then(data => data.data);
   };
+  const exportExcel = () => {
+    var oReq = new XMLHttpRequest();
+    oReq.open('get', 'api/merchant/accountChangeLogExportExcel', true);
+    oReq.responseType = 'blob';
+    oReq.setRequestHeader('Content-Type', 'application/json');
+    oReq.onload = function(oEvent) {
+      var content = oReq.response;
+      var elink = document.createElement('a');
+      elink.download = '商户账变日志.xlsx';
+      elink.style.display = 'none';
+      var blob = new Blob([content]);
+      elink.href = URL.createObjectURL(blob);
+      document.body.appendChild(elink);
+      elink.click();
+      document.body.removeChild(elink);
+    };
+    oReq.send();
+  };
   return (
     <PageHeaderWrapper title={false}>
       <ProTable<TableListItem>
         rowKey="id"
         actionRef={actionRef}
         headerTitle="商户账变日志"
+        toolBarRender={() => [<Button onClick={exportExcel}>导出</Button>]}
         request={params => {
           const { current: pageNum, pageSize, ...rest } = params;
           params = { pageNum, pageSize, ...rest };

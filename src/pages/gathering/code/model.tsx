@@ -42,6 +42,9 @@ const Model: ModelType = {
     *restoreGatheringCodeById({ payload }, { call, put }) {
       return yield call(Serivce.restoreGatheringCodeById, payload.params);
     },
+    *changeNormal({ payload }, { call, put }) {
+      return yield call(Serivce.changeNormal, payload.params);
+    },
   },
 
   reducers: {},

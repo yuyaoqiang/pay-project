@@ -36,6 +36,9 @@ const Model: ModelType = {
     *del({ payload }, { call, put }) {
       return yield call(Serivce.del, payload.params);
     },
+    *exportExcel({ payload }, { call, put }) {
+      return yield call(Serivce.exportExcel, payload.params);
+    },
   },
 
   reducers: {},

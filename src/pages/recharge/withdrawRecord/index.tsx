@@ -212,6 +212,26 @@ const Settlement = props => {
       return data.data;
     });
   };
+
+  const exportExcel = () => {
+    var oReq = new XMLHttpRequest();
+    oReq.open('get', 'api/withdraw/exportExcel', true);
+    oReq.responseType = 'blob';
+    oReq.setRequestHeader('Content-Type', 'application/json');
+    oReq.onload = function(oEvent) {
+      var content = oReq.response;
+      var elink = document.createElement('a');
+      elink.download = '提现记录.xlsx';
+      elink.style.display = 'none';
+      var blob = new Blob([content]);
+      elink.href = URL.createObjectURL(blob);
+      document.body.appendChild(elink);
+      elink.click();
+      document.body.removeChild(elink);
+    };
+    oReq.send();
+  };
+
   const getRcord = async data => {
     setRcord(data);
     handleHasModity(true);
@@ -221,6 +241,7 @@ const Settlement = props => {
       <ProTable<TableListItem>
         rowKey="id"
         actionRef={actionRef}
+        toolBarRender={() => [<Button onClick={exportExcel}>导出</Button>]}
         headerTitle="提现记录"
         request={params => {
           const { current: pageNum, pageSize, ...rest } = params;

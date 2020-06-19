@@ -13,7 +13,7 @@ export const MaskImg = props => {
         width: '100%',
         height: '100vh',
         background: '#000000',
-        opacity: '0.5',
+        opacity: '1',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

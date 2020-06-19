@@ -27,5 +27,14 @@ class Service {
       params,
     });
   }
+  @Debounce(constant.DEBOUNCE_TIME, { leading: true })
+  static exportExcel(params) {
+    return request.get('/userAccount/accountChangeLogExportExcel', {
+      params,
+      headers: {
+        responseType: 'arraybuffer',
+      },
+    });
+  }
 }
 export default Service;

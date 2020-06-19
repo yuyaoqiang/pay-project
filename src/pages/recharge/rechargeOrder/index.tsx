@@ -230,6 +230,26 @@ const Settlement = props => {
       setPayChannel(res.data);
     });
   };
+
+  const exportExcel = () => {
+    var oReq = new XMLHttpRequest();
+    oReq.open('get', 'api/recharge/exportExcel', true);
+    oReq.responseType = 'blob';
+    oReq.setRequestHeader('Content-Type', 'application/json');
+    oReq.onload = function(oEvent) {
+      var content = oReq.response;
+      var elink = document.createElement('a');
+      elink.download = '充值订单.xlsx';
+      elink.style.display = 'none';
+      var blob = new Blob([content]);
+      elink.href = URL.createObjectURL(blob);
+      document.body.appendChild(elink);
+      elink.click();
+      document.body.removeChild(elink);
+    };
+    oReq.send();
+  };
+
   const getDatas = params => {
     if (!params.dateRange) {
       params.submitStartTime = moment().format(constant.YYYY_MM_DD);
@@ -253,6 +273,7 @@ const Settlement = props => {
     <PageHeaderWrapper title={false}>
       <ProTable<TableListItem>
         rowKey="id"
+        toolBarRender={() => [<Button onClick={exportExcel}>导出</Button>]}
         actionRef={actionRef}
         headerTitle="充值订单"
         request={params => {

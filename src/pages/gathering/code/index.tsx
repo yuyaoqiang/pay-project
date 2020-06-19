@@ -1,6 +1,6 @@
 import { connect } from 'dva';
 import React, { useState, useRef, useEffect } from 'react';
-import { Button, message, Card, Select } from 'antd';
+import { Button, message, Modal, Select } from 'antd';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from './data';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
@@ -203,10 +203,10 @@ const Code = props => {
         return (
           <div>
             <p>
-              {record.todayReceiveOrderAmt +
+              {record.todaySuccessOrderAmt +
                 '元' +
                 '/' +
-                record.todayReceiveOrderQty +
+                record.todaySuccessOrderQty +
                 '次' +
                 '/' +
                 record.todayDispatchOrderQty +
@@ -299,7 +299,7 @@ const Code = props => {
               type={'primary'}
               size={'small'}
               onClick={() => {
-                getRcord(record);
+                changeNormal({id:record.id});
               }}
             >
               改为正常
@@ -311,7 +311,7 @@ const Code = props => {
               type={'primary'}
               size={'small'}
               onClick={() => {
-                restore({id:record.id});
+                restore({ id: record.id });
               }}
             >
               恢复
@@ -594,7 +594,7 @@ const Code = props => {
               type={'primary'}
               size={'small'}
               onClick={() => {
-                getRcord(record);
+                changeNormal({id:record.id});
               }}
             >
               改为正常
@@ -638,22 +638,49 @@ const Code = props => {
       actionRef.current.reload();
     });
   };
+  const changeNormal = params => {
+    Modal.confirm({
+      title: '提示',
+      content: `确定改为正常吗?`,
+      onOk: () => {
+        return dispatch({
+          type: 'code/changeNormal',
+          payload: { params },
+        }).then(data => {
+          message.success('修改成功');
+          actionRef.current.reload();
+        });
+      },
+    });
+  };
   const del = params => {
-    return dispatch({
-      type: 'code/del',
-      payload: { params },
-    }).then(data => {
-      message.success('删除成功');
-      actionRef.current.reload();
+    Modal.confirm({
+      title: '提示',
+      content: `确定要删除吗?`,
+      onOk: () => {
+        return dispatch({
+          type: 'code/del',
+          payload: { params },
+        }).then(data => {
+          message.success('删除成功');
+          actionRef.current.reload();
+        });
+      },
     });
   };
   const restore = params => {
-    return dispatch({
-      type: 'code/restoreGatheringCodeById',
-      payload: { params },
-    }).then(data => {
-      message.success('恢复成功');
-      actionRef.current.reload();
+    Modal.confirm({
+      title: '提示',
+      content: `确定要恢复吗?`,
+      onOk: () => {
+        return dispatch({
+          type: 'code/restoreGatheringCodeById',
+          payload: { params },
+        }).then(data => {
+          message.success('恢复成功');
+          actionRef.current.reload();
+        });
+      },
     });
   };
   const findGatheringCodeState = () => {

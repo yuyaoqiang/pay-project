@@ -202,6 +202,25 @@ const Settlement = props => {
     },
   ];
 
+  const exportExcel = () => {
+    var oReq = new XMLHttpRequest();
+    oReq.open('get', 'api/merchant/merchantSettlementRecordExportExcel', true);
+    oReq.responseType = 'blob';
+    oReq.setRequestHeader('Content-Type', 'application/json');
+    oReq.onload = function(oEvent) {
+      var content = oReq.response;
+      var elink = document.createElement('a');
+      elink.download = '商户结算记录.xlsx';
+      elink.style.display = 'none';
+      var blob = new Blob([content]);
+      elink.href = URL.createObjectURL(blob);
+      document.body.appendChild(elink);
+      elink.click();
+      document.body.removeChild(elink);
+    };
+    oReq.send();
+  };
+
   const ok = params => {
     const { id } = params;
     Modal.confirm({
@@ -269,6 +288,7 @@ const Settlement = props => {
         rowKey="id"
         actionRef={actionRef}
         headerTitle="商户结算"
+        toolBarRender={() => [<Button onClick={exportExcel}>导出</Button>]}
         request={params => {
           const { current: pageNum, pageSize, ...rest } = params;
           params = { pageNum, pageSize, ...rest };

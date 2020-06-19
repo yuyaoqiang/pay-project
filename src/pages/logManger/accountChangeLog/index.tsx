@@ -8,6 +8,7 @@ import { ConnectState } from '@/models/connect';
 import { helpers, constant, utils } from '@/utils';
 import moment from 'moment';
 import _ from 'lodash';
+import { Button } from 'antd';
 const Agent = props => {
   const actionRef = useRef<ActionType>();
   const [dateRange, setDateRange] = useState({
@@ -95,6 +96,24 @@ const Agent = props => {
       payload: {},
     });
   };
+  const exportExcel = () => {
+    var oReq = new XMLHttpRequest();
+    oReq.open('get', 'api/userAccount/accountChangeLogExportExcel', true);
+    oReq.responseType = 'blob';
+    oReq.setRequestHeader('Content-Type', 'application/json');
+    oReq.onload = function(oEvent) {
+      var content = oReq.response;
+      var elink = document.createElement('a');
+      elink.download = '码商账变日志.xlsx';
+      elink.style.display = 'none';
+      var blob = new Blob([content]);
+      elink.href = URL.createObjectURL(blob);
+      document.body.appendChild(elink);
+      elink.click();
+      document.body.removeChild(elink);
+    };
+    oReq.send();
+  };
   const getDatas = params => {
     if (!params.dateRange) {
       params.startTime = moment().format(constant.YYYY_MM_DD);
@@ -113,6 +132,7 @@ const Agent = props => {
       <ProTable<TableListItem>
         rowKey="id"
         actionRef={actionRef}
+        toolBarRender={() => [<Button onClick={exportExcel}>导出</Button>]}
         headerTitle="码商账变日志"
         request={params => {
           const { current: pageNum, pageSize, ...rest } = params;

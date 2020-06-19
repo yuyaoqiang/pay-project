@@ -14,6 +14,12 @@ class Service {
       params,
     });
   }
+  @Debounce(constant.DEBOUNCE_TIME, { leading: true })
+  static changeNormal(params) {
+    return request.get('/gatheringCode/updateToNormalState', {
+      params,
+    });
+  }
 
   @Debounce(constant.DEBOUNCE_TIME, { leading: true })
   static update(params) {

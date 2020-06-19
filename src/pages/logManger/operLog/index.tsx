@@ -30,6 +30,12 @@ const Agent = props => {
       align: 'center',
     },
     {
+      title: '关键字',
+      dataIndex: 'param',
+      align: 'center',
+      hideInTable:true,
+    },
+    {
       title: '系统',
       dataIndex: 'system',
       align: 'center',
