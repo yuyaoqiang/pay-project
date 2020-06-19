@@ -123,7 +123,7 @@ const MerchantOrder = props => {
           { name: '全部', type: 'all' },
           ...list.map(m => {
             return {
-              type: m.channelCode,
+              type: m.id,
               name: m.channelName,
             };
           }),
@@ -270,7 +270,7 @@ const MerchantOrder = props => {
           { name: '全部', type: 'all' },
           ...list.map(m => {
             return {
-              type: m.id,
+              type: m.dictItemCode,
               name: m.dictItemName,
               status: m.dictItemCode == 2 ? true : false,
             };
