@@ -43,7 +43,7 @@ const Agent = props => {
       align: 'center',
       hideInSearch: true,
       render: (item, record: any) => {
-        return record.paidAmount + record.manualAmount - record.poundage;
+        return (record.paidAmount + record.manualAmount - record.poundage).toFixed(4);
       },
     },
     {
@@ -51,6 +51,27 @@ const Agent = props => {
       dataIndex: 'manualAmount',
       align: 'center',
       hideInSearch: true,
+    },
+    {
+      title: '已支付订单量',
+      dataIndex: 'paidOrderNum',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '订单量',
+      dataIndex: 'orderNum',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '成功率',
+      dataIndex: 'successRate',
+      align: 'center',
+      hideInSearch: true,
+      render: (item, row) => {
+        return item + '%';
+      },
     },
     {
       title: '日期',
@@ -92,7 +113,7 @@ const Agent = props => {
   return (
     <PageHeaderWrapper title={false}>
       <ProTable<TableListItem>
-        rowKey="merchantId"
+        rowKey="channelName"
         actionRef={actionRef}
         headerTitle={<>统计分析</>}
         request={params => {

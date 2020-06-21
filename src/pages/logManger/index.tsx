@@ -26,11 +26,6 @@ const Agent = props => {
 
   const columns: ProColumns<TableListItem>[] = [
     {
-      title: '账号',
-      dataIndex: 'userName',
-      align: 'center',
-    },
-    {
       title: '订单号',
       dataIndex: 'orderNo',
       align: 'center',

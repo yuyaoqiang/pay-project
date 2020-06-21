@@ -288,15 +288,15 @@ console.log(noBounty)
             <Descriptions size={'small'} column={4} layout="vertical" bordered>
               <Descriptions.Item label="支付地址">{defulat.payUrl}</Descriptions.Item>
             </Descriptions>
-            {helpers.isJudge(defulat.gatheringChannelName.includes('支付宝'))(
+            {/* {helpers.isJudge(defulat.gatheringChannelName.includes('支付宝'))(
               <Descriptions size={'small'} column={4} layout="vertical" bordered>
                 <Descriptions.Item label="支付宝昵称">{defulat.payee}</Descriptions.Item>
                 <Descriptions.Item label="真实姓名">{defulat.realName}</Descriptions.Item>
                 <Descriptions.Item label="支付宝账号">{defulat.account}</Descriptions.Item>
               </Descriptions>,
               null,
-            )}
-            {helpers.isJudge(
+            )} */}
+            {/* {helpers.isJudge(
               ['bankCard', 'alipayTransferBank'].includes(defulat.gatheringChannelCode),
             )(
               <Descriptions size={'small'} column={4} layout="vertical" bordered>
@@ -305,15 +305,15 @@ console.log(noBounty)
                 <Descriptions.Item label="卡号">{defulat.bankCardAccount}</Descriptions.Item>
               </Descriptions>,
               null,
-            )}
+            )} */}
 
-            {helpers.isJudge(defulat.gatheringChannelCode == 'ysf')(
+            {/* {helpers.isJudge(defulat.gatheringChannelCode == 'ysf')(
               <Descriptions size={'small'} column={4} layout="vertical" bordered>
                 <Descriptions.Item label="云闪付账号">{defulat.account}</Descriptions.Item>
                 <Descriptions.Item label="真实姓名">{defulat.realName}</Descriptions.Item>
               </Descriptions>,
               null,
-            )}
+            )} */}
           </Col>
           {helpers.isJudge(!_.isEmpty(defulat.gatheringCodeStorageId))(
             <Col span={6}>

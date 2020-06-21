@@ -44,7 +44,7 @@ const getRechargeSetting = props => {
       }),
     },
     {
-      type: 'input_number',
+      type: 'input',
       label: '资金密码',
       key: 'moneyPwd',
       validator: validator.onlyRequier,

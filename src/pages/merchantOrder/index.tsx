@@ -36,24 +36,6 @@ const MerchantOrder = props => {
       hideInTable: true,
     },
     {
-      title: '商户',
-      dataIndex: 'merchantId',
-      ellipsis: true,
-      align: 'center',
-      hideInTable: true,
-      valueEnum: utils.getValueEnum(common.merchantList, list => {
-        return [
-          { name: '全部', type: 'all' },
-          ...list.map(m => {
-            return {
-              type: m.id,
-              name: m.merchantName,
-            };
-          }),
-        ];
-      }),
-    },
-    {
       title: '商户订单号',
       dataIndex: 'merchantOrderNo',
       ellipsis: true,
@@ -61,7 +43,7 @@ const MerchantOrder = props => {
       hideInTable: true,
     },
     {
-      title: '订单号/商户/商户订单号',
+      title: '订单号/商户订单号',
       ellipsis: true,
       align: 'center',
       render: (item, rcord: any) => {
@@ -74,7 +56,6 @@ const MerchantOrder = props => {
             }}
           >
             <p className={styles.mg0}>{rcord.orderNo}</p>
-            <p className={styles.mg0}> {rcord.merchantName}</p>
             <p className={styles.mg0}>{rcord.payInfo && rcord.payInfo.orderNo}</p>
           </a>
         );
@@ -130,32 +111,32 @@ const MerchantOrder = props => {
         ];
       }),
     },
-    {
-      title: '收款方式',
-      dataIndex: 'gatheringCodeId',
-      ellipsis: true,
-      align: 'center',
-      hideInTable: true,
-      valueEnum: utils.getValueEnum(common.gatheringCode, list => {
-        return [
-          { name: '全部', type: 'all' },
-          ...list.map(m => {
-            return {
-              type: m.id,
-              name: m.gatheringChannelName + '/收款人/' + m.payee,
-            };
-          }),
-        ];
-      }),
-    },
-    {
-      title: '金额',
-      dataIndex: 'gatheringAmount',
-      ellipsis: true,
-      align: 'center',
-      hideInTable: true,
-      hideInSearch: true,
-    },
+    // {
+    //   title: '收款方式',
+    //   dataIndex: 'gatheringCodeId',
+    //   ellipsis: true,
+    //   align: 'center',
+    //   hideInTable: true,
+    //   valueEnum: utils.getValueEnum(common.gatheringCode, list => {
+    //     return [
+    //       { name: '全部', type: 'all' },
+    //       ...list.map(m => {
+    //         return {
+    //           type: m.id,
+    //           name: m.gatheringChannelName + '/收款人/' + m.payee,
+    //         };
+    //       }),
+    //     ];
+    //   }),
+    // },
+    // {
+    //   title: '金额',
+    //   dataIndex: 'gatheringAmount',
+    //   ellipsis: true,
+    //   align: 'center',
+    //   hideInTable: true,
+    //   hideInSearch: true,
+    // },
     {
       title: '通道/金额/费率',
       ellipsis: true,
@@ -180,78 +161,31 @@ const MerchantOrder = props => {
         );
       },
     },
-    {
-      title: '奖励金/返点',
-      ellipsis: true,
-      align: 'center',
-      render: (item, record: any) => {
-        return (
-          <span>
-            {helpers.isJudge(record.bounty != null)(
-              record.bounty + common.sysSetting.currencyUnit + '/' + record.rebate + '%',
-              null,
-            )}
-          </span>
-        );
-      },
-    },
-    {
-      title: '接单时间/接单人/邀请人',
-      ellipsis: true,
-      align: 'center',
-      render: (item, record: any) => {
-        return (
-          <div>
-            {helpers.isJudge(record.receivedTime == null)(
-              null,
-              <>
-                <p>{record.receivedTime}</p>
-                <p>{`${record.receiverUserName}/${record.inviterName}`}</p>
-              </>,
-            )}
-          </div>
-        );
-      },
-    },
-    {
-      title: '接单人',
-      align: 'center',
-      dataIndex: 'receiverUserName',
-      width: 100,
-      hideInTable: true,
-    },
-    {
-      title: '确认方式',
-      align: 'center',
-      dataIndex: 'confirmWay',
-      width: 100,
-      hideInTable: true,
-      valueEnum: utils.getValueEnum(common.orderConfirmWay, list => {
-        return [
-          { name: '全部', type: 'all' },
-          ...list.map(m => {
-            return {
-              type: m.dictItemCode,
-              name: m.dictItemName,
-            };
-          }),
-        ];
-      }),
-    },
-    {
-      title: '订单ip',
-      dataIndex: 'orderIp',
-      ellipsis: true,
-      align: 'center',
-      hideInTable: true,
-    },
-    {
-      title: '订单ip',
-      dataIndex: 'payInfo.ip',
-      ellipsis: true,
-      align: 'center',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '接单人',
+    //   align: 'center',
+    //   dataIndex: 'receiverUserName',
+    //   width: 100,
+    //   hideInTable: true,
+    // },
+    // {
+    //   title: '确认方式',
+    //   align: 'center',
+    //   dataIndex: 'confirmWay',
+    //   width: 100,
+    //   hideInTable: true,
+    //   valueEnum: utils.getValueEnum(common.orderConfirmWay, list => {
+    //     return [
+    //       { name: '全部', type: 'all' },
+    //       ...list.map(m => {
+    //         return {
+    //           type: m.dictItemCode,
+    //           name: m.dictItemName,
+    //         };
+    //       }),
+    //     ];
+    //   }),
+    // },
     {
       title: '提交时间',
       dataIndex: 'submitTime',

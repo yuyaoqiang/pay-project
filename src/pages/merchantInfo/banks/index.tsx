@@ -23,6 +23,7 @@ const Code = props => {
       title: '开户银行',
       dataIndex: 'openAccountBank',
       align: 'center',
+      hideInSearch: true,
     },
     {
       title: '开户姓名',
