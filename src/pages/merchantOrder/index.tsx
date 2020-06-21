@@ -1,6 +1,6 @@
 import { connect } from 'dva';
 import React, { useState, useRef } from 'react';
-import { Button, message, Card, Spin, Modal } from 'antd';
+import { Button, message, Card, Spin, Modal, Popover } from 'antd';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from './data';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
@@ -55,7 +55,17 @@ const MerchantOrder = props => {
               handleInfoModalVisible(true);
             }}
           >
-            <p className={styles.mg0}>{rcord.orderNo}</p>
+            <div
+              onClick={e => {
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
+              }}
+            >
+              <Popover content={rcord.orderNo} title="订单号">
+                <p className={styles.mg0}>{rcord.orderNo}</p>
+              </Popover>
+            </div>
+
             <p className={styles.mg0}>{rcord.payInfo && rcord.payInfo.orderNo}</p>
           </a>
         );
@@ -197,7 +207,7 @@ const MerchantOrder = props => {
       title: '通知状态',
       ellipsis: true,
       align: 'center',
-      dataIndex: 'noticeState',
+      dataIndex: 'payNoticeState',
       hideInTable: true,
       valueEnum: utils.getValueEnum(common.payNoticeState, list => {
         return [
@@ -226,7 +236,10 @@ const MerchantOrder = props => {
             reslut = m;
           }
         });
-      return helpers.isJudge(reslut.dictItemName=="通知成功")(<span style={{color:'green'}}>{reslut.dictItemName}</span>,<span style={{color:'red'}}>{reslut.dictItemName}</span>);
+        return helpers.isJudge(reslut.dictItemName == '通知成功')(
+          <span style={{ color: 'green' }}>{reslut.dictItemName}</span>,
+          <span style={{ color: 'red' }}>{reslut.dictItemName}</span>,
+        );
       },
     },
     {
@@ -299,6 +312,13 @@ const MerchantOrder = props => {
     });
   };
   const getDatas = params => {
+    if (!params.dateRange) {
+      params.submitStartTime = moment().format(constant.YYYY_MM_DD);
+      params.submitEndTime = moment().format(constant.YYYY_MM_DD);
+    } else {
+      params.submitStartTime = moment(params.dateRange[0]).format(constant.YYYY_MM_DD);
+      params.submitEndTime = moment(params.dateRange[1]).format(constant.YYYY_MM_DD);
+    }
     return dispatch({
       type: 'merchantOrder/list',
       payload: { params },
@@ -341,47 +361,34 @@ const MerchantOrder = props => {
     <>
       <PageHeaderWrapper title={false}>
         <Spin spinning={props.loadingState}>
-        <ProTable<TableListItem>
-          rowKey={'id'}
-          actionRef={actionRef}
-          headerTitle="商户订单列表"
-          // toolBarRender={() => [
-          //   <Button
-          //     icon="plus"
-          //     type="primary"
-          //     onClick={() => {
-          //       setRcord({});
-          //       handleHasModity(false);
-          //       handleModalVisible(true);
-          //     }}
-          //   >
-          //     添加
-          //   </Button>,
-          // ]}
-          request={params => {
-            const { current: pageNum, pageSize, ...rest } = params;
-            params = { pageNum, pageSize, ...rest };
-            return getDatas(params);
-          }}
-          columns={columns}
-          bordered
-          size={'small'}
-          options={{
-            fullScreen: false,
-            setting: true,
-            reload: true,
-            density: false,
-          }}
-          pagination={{
-            defaultCurrent: 1,
-            defaultPageSize: 20,
-            position: 'bottom',
-            showTotal: (total, range) => `共${total}条记录`,
-          }}
-          footer={() => {
-            return <Card>{`已支付总计：${data.statistics || 0}元`}</Card>;
-          }}
-        />
+          <ProTable<TableListItem>
+            rowKey={'id'}
+            actionRef={actionRef}
+            headerTitle="商户订单列表"
+            request={params => {
+              const { current: pageNum, pageSize, ...rest } = params;
+              params = { pageNum, pageSize, ...rest };
+              return getDatas(params);
+            }}
+            columns={columns}
+            bordered
+            size={'small'}
+            options={{
+              fullScreen: false,
+              setting: true,
+              reload: true,
+              density: false,
+            }}
+            pagination={{
+              defaultCurrent: 1,
+              defaultPageSize: 20,
+              position: 'bottom',
+              showTotal: (total, range) => `共${total}条记录`,
+            }}
+            footer={() => {
+              return <Card>{`已支付总计：${data.statistics || 0}元`}</Card>;
+            }}
+          />
         </Spin>
 
         {modalVisible && (
