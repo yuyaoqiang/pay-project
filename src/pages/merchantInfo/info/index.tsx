@@ -114,7 +114,7 @@ const Info = props => {
               onCancel={() => handleGoogleModalVisible(false)}
               modalVisible={googleModalVisible}
               confirmLoading={props.loadingState}
-              defulat={rcord}
+              defulat={user}
               hasModity={hasModity}
               dispatch={dispatch}
             />

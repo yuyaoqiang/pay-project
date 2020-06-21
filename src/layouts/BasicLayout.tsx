@@ -93,7 +93,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   const filterRouter = () => {
     let filter = [];
     routers.map(item => {
-      if (user.accountType != 'merchantAgent' && item.id == '9999') {
+      if (user.accountType == 'merchant' && item.id == '9999') {
         item.hideInMenu = true;
       }
       filter.push(item);

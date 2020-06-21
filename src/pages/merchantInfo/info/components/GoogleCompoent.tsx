@@ -95,7 +95,7 @@ const UpdatePsd: React.FC<ModalFormProps> = props => {
         {helpers.isJudge(authInfo.googleSecretKey !== null)(
           <QRCode
             style={{ display: 'inline-block'}}
-            value={`otpauth://totp/ ${defulat.id}?secret=${authInfo.googleSecretKey}`}
+            value={`otpauth://totp/${defulat.userName}?secret=${authInfo.googleSecretKey}`}
             size={200}
           />,
           <div style={{ height: 200 }}></div>,
