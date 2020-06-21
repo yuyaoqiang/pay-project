@@ -110,7 +110,7 @@ const Agent = props => {
       render:(item,row:any)=>{
         return <>
           {row.gatheringChannelRates.map((item,index)=>{
-            return  <p style={{margin:0}} key={index}>{item.channel.channelName}：{item.channel.rate}</p>
+            return  <p style={{margin:0}} key={index}>{item.channel.channelName}：{item.rate}</p>
           })}
         </>
       }
