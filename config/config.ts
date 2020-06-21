@@ -208,6 +208,11 @@ export default {
                   component: './gathering/code',
                 },
                 {
+                  name: 'gathering',
+                  path: '/gathering/codeDel',
+                  component: './gathering/codeDel',
+                },
+                {
                   name: 'channel',
                   path: '/gathering/channel',
                   component: './gathering/channel',

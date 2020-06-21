@@ -43,7 +43,6 @@ const Agent = props => {
     {
       title: '用户名',
       dataIndex: 'userName',
-      width: 80,
       ellipsis: true,
       align: 'center',
       hideInSearch: true,
@@ -91,8 +90,8 @@ const Agent = props => {
       render: (item, record: any) => {
         return (
           <>
-            <p>{record.accountTypeName}</p>
-            {helpers.isJudge(record.inviterId)(<p>上级商户:{record.inviterUserName}</p>, null)}
+            <p style={{margin:0}}>{record.accountTypeName}</p>
+            {helpers.isJudge(record.inviterId)(<p style={{margin:0}}> 上级商户:{record.inviterUserName}</p>, null)}
           </>
         );
       },
@@ -102,6 +101,19 @@ const Agent = props => {
       dataIndex: 'withdrawableAmount',
       align: 'center',
       hideInSearch: true,
+    },
+    {
+      title: '费率',
+      dataIndex: 'gatheringChannelRates',
+      align: 'center',
+      hideInSearch: true,
+      render:(item,row:any)=>{
+        return <>
+          {row.gatheringChannelRates.map((item,index)=>{
+            return  <p style={{margin:0}} key={index}>{item.channel.channelName}：{item.channel.rate}</p>
+          })}
+        </>
+      }
     },
     {
       title: '账号状态',
@@ -151,6 +163,7 @@ const Agent = props => {
       dataIndex: 'option',
       valueType: 'option',
       align: 'center',
+      width:100,
       render: (_, record) => (
         <>
           <Button

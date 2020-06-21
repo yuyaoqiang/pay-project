@@ -21,11 +21,11 @@ const Code = props => {
   const actionRef = useRef<ActionType>();
   const { dispatch, common } = props;
   const [isDel, setIsDel] = useState(false);
-  let columns2: any = [
+  let columns: any = [
     {
       title: '状态',
-      width: 80,
       dataIndex: 'state',
+      width: 80,
       align: 'center',
       valueEnum: utils.getValueEnum(common.gatheringCodeState, list => {
         return list.map(m => {
@@ -107,6 +107,12 @@ const Code = props => {
       hideInSearch: true,
     },
     {
+      title: '删除时间',
+      dataIndex: 'deletedTime',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
       title: '最后接单时间',
       dataIndex: 'lastReceivedTime',
       align: 'center',
@@ -172,10 +178,10 @@ const Code = props => {
         return (
           <div>
             <p>
-              {record.todayReceiveOrderAmt +
+              {record.todaySuccessOrderAmt +
                 '元' +
                 '/' +
-                record.todayReceiveOrderQty +
+                record.todaySuccessOrderQty +
                 '次' +
                 '/' +
                 record.todayDispatchOrderQty +
@@ -268,7 +274,7 @@ const Code = props => {
               type={'primary'}
               size={'small'}
               onClick={() => {
-                changeNormal({ id: record.id });
+                changeNormal({id:record.id});
               }}
             >
               改为正常
@@ -280,7 +286,7 @@ const Code = props => {
               type={'primary'}
               size={'small'}
               onClick={() => {
-                getRcord(record);
+                restore({ id: record.id });
               }}
             >
               恢复
@@ -293,9 +299,9 @@ const Code = props => {
   ];
 
   const getDatas = params => {
-    params.deletedFlag = 0;
+      params.deletedFlag = 1;
     return dispatch({
-      type: 'code/list',
+      type: 'codeDel/list',
       payload: { params },
     }).then(data => {
       setRcord(data.data);
@@ -368,32 +374,32 @@ const Code = props => {
 
   return (
     <PageHeaderWrapper title={false}>
-      <ProTable<TableListItem>
-        loading={props.loadingState}
-        rowKey="id"
-        actionRef={actionRef}
-        headerTitle="收款方式"
-        request={params => {
-          const { current: pageNum, pageSize, ...rest } = params;
-          params = { pageNum, pageSize, ...rest };
-          return getDatas(params);
-        }}
-        columns={columns2}
-        bordered
-        size={'small'}
-        options={{
-          fullScreen: false,
-          setting: true,
-          reload: true,
-          density: false,
-        }}
-        pagination={{
-          defaultCurrent: 1,
-          defaultPageSize: 20,
-          position: 'bottom',
-          showTotal: (total, range) => `共${total}条记录`,
-        }}
-      />
+     <ProTable<TableListItem>
+          rowKey="id"
+          loading={props.loadingState}
+          actionRef={actionRef}
+          headerTitle="收款方式-回收站"
+          request={params => {
+            const { current: pageNum, pageSize, ...rest } = params;
+            params = { pageNum, pageSize, ...rest };
+            return getDatas(params);
+          }}
+          columns={columns}
+          bordered
+          size={'small'}
+          options={{
+            fullScreen: false,
+            setting: true,
+            reload: true,
+            density: false,
+          }}
+          pagination={{
+            defaultCurrent: 1,
+            defaultPageSize: 20,
+            position: 'bottom',
+            showTotal: (total, range) => `共${total}条记录`,
+          }}
+        />
       {helpers.isJudge(maskVisiable)(
         <MaskImg
           imgSrc={`/api/storage/fetch/${rcord.storageId}`}

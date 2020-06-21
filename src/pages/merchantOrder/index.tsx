@@ -371,6 +371,13 @@ const MerchantOrder = props => {
     });
   };
   const getDatas = params => {
+    if (!params.dateRange) {
+      params.startTime = moment().format(constant.YYYY_MM_DD);
+      params.endTime = moment().format(constant.YYYY_MM_DD);
+    } else {
+      params.startTime = moment(params.dateRange[0]).format(constant.YYYY_MM_DD);
+      params.endTime = moment(params.dateRange[1]).format(constant.YYYY_MM_DD);
+    }
     return dispatch({
       type: 'merchantOrder/list',
       payload: { params },

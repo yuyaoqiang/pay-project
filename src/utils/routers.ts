@@ -231,6 +231,12 @@ export default [
         hideInMenu: true,
       },
       {
+        id:'695',
+        path: 'codeDel',
+        name: '收款方式回收站',
+        hideInMenu: true,
+      },
+      {
         id:'696',
         path: 'channel',
         name: '收款通道',

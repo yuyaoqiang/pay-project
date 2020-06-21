@@ -46,7 +46,7 @@ const UpdatePsd: React.FC<ModalFormProps> = props => {
       type: 'backAccount/generateGoogleSecretKey',
       payload: { params: {} },
     }).then(data => {
-      message.success("获取秘钥成功")
+      message.success('获取秘钥成功');
       setAuthInfo({ googleSecretKey: data.data, googleAuthBindTime: '' });
     });
   };
@@ -54,13 +54,13 @@ const UpdatePsd: React.FC<ModalFormProps> = props => {
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
-        fieldsValue.userAccountId = defulat.id;
-        fieldsValue.googleSecretKey = authInfo.googleSecretKey
+      fieldsValue.userAccountId = defulat.id;
+      fieldsValue.googleSecretKey = authInfo.googleSecretKey;
       dispatch({
         type: 'backAccount/bindGoogleAuth',
         payload: { params: fieldsValue },
       }).then(data => {
-        message.success("绑定成功")
+        message.success('绑定成功');
       });
     });
   };
@@ -94,8 +94,8 @@ const UpdatePsd: React.FC<ModalFormProps> = props => {
         </p>
         {helpers.isJudge(authInfo.googleSecretKey !== null)(
           <QRCode
-            style={{ display: 'inline-block'}}
-            value={`otpauth://totp/ ${defulat.id}?secret=${authInfo.googleSecretKey}`}
+            style={{ display: 'inline-block' }}
+            value={`otpauth://totp/${defulat.userName}?secret=${authInfo.googleSecretKey}`}
             size={200}
           />,
           <div style={{ height: 200 }}></div>,
