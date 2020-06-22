@@ -37,7 +37,7 @@ const MerchantOrder = props => {
     },
     {
       title: '商户订单号',
-      dataIndex: 'orderNo',
+      dataIndex: 'merchantOrderNo',
       align: 'center',
       hideInTable: true,
     },
