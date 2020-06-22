@@ -60,6 +60,7 @@ const UpdatePsd: React.FC<ModalFormProps> = props => {
         type: 'info/bindGoogleAuth',
         payload: { params: fieldsValue },
       }).then(data => {
+        onCancel();
         message.success("绑定成功")
       });
     });

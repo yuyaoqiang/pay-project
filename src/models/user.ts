@@ -66,7 +66,7 @@ const UserModel: UserModelType = {
         const resp = yield put({ type: 'getUserInfo', payload: {} });
         resp
           .then(res => {
-            router.push('/dashboard');
+            router.push('/merchanStatistics');
           })
           .catch(e => {
             const { redirect } = getPageQuery();

@@ -99,14 +99,14 @@ class Login extends Component<LoginProps, LoginState> {
             this.loginForm = form;
           }}
         >
-          <Tab key="account" tab="用户登录">
+          <Tab key="account" tab="商户登录">
             <UserName
               name="username"
-              placeholder={`${'用户名'}: admin or user`}
+              placeholder={`${'商户名'}`}
               rules={[
                 {
                   required: true,
-                  message: '请输入用户名!',
+                  message: '请输入商户名!',
                 },
               ]}
             />

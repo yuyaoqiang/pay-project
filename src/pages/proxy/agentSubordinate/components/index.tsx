@@ -77,7 +77,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
             </Select.Option>
             {common.gatheringChannel.map(item => {
               return (
-                <Select.Option key={`item-${item.channelCode}`} value={item.channelCode}>
+                <Select.Option key={`item-${item.channelId}`} value={item.channelId}>
                   {item.channelName}
                 </Select.Option>
               );

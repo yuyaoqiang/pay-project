@@ -7,7 +7,7 @@ import ProLayout, {
 import React, { useEffect, useState } from 'react';
 import Link from 'umi/link';
 import { Dispatch } from 'redux';
-import { connect, router } from 'dva';
+import { connect } from 'dva';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState, UserModelState } from '@/models/connect';
 import routers from '@/utils/routers';
@@ -33,7 +33,7 @@ export type BasicLayoutContext = { [K in 'location']: BasicLayoutProps[K] } & {
 
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
   const { dispatch, children, settings, user } = props;
-  const [router, setRouter] = useState(routers);
+  const [router, setRouters] = useState([]);
   useEffect(() => {
     // getPermissions();
     getSystemSetting();
@@ -95,10 +95,13 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     routers.map(item => {
       if (user.accountType == 'merchant' && item.id == '9999') {
         item.hideInMenu = true;
+      }else{
+        item.hideInMenu = false;
       }
       filter.push(item);
     });
-    setRouter(filter)
+    console.log(filter)
+    setRouters(filter)
   };
   return (
     <ProLayout

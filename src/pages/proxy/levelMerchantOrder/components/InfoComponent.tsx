@@ -288,32 +288,6 @@ console.log(noBounty)
             <Descriptions size={'small'} column={4} layout="vertical" bordered>
               <Descriptions.Item label="支付地址">{defulat.payUrl}</Descriptions.Item>
             </Descriptions>
-            {helpers.isJudge(defulat.gatheringChannelName.includes('支付宝'))(
-              <Descriptions size={'small'} column={4} layout="vertical" bordered>
-                <Descriptions.Item label="支付宝昵称">{defulat.payee}</Descriptions.Item>
-                <Descriptions.Item label="真实姓名">{defulat.realName}</Descriptions.Item>
-                <Descriptions.Item label="支付宝账号">{defulat.account}</Descriptions.Item>
-              </Descriptions>,
-              null,
-            )}
-            {helpers.isJudge(
-              ['bankCard', 'alipayTransferBank'].includes(defulat.gatheringChannelCode),
-            )(
-              <Descriptions size={'small'} column={4} layout="vertical" bordered>
-                <Descriptions.Item label="开户行">{defulat.openAccountBank}</Descriptions.Item>
-                <Descriptions.Item label="开户人">{defulat.accountHolder}</Descriptions.Item>
-                <Descriptions.Item label="卡号">{defulat.bankCardAccount}</Descriptions.Item>
-              </Descriptions>,
-              null,
-            )}
-
-            {helpers.isJudge(defulat.gatheringChannelCode == 'ysf')(
-              <Descriptions size={'small'} column={4} layout="vertical" bordered>
-                <Descriptions.Item label="云闪付账号">{defulat.account}</Descriptions.Item>
-                <Descriptions.Item label="真实姓名">{defulat.realName}</Descriptions.Item>
-              </Descriptions>,
-              null,
-            )}
           </Col>
           {helpers.isJudge(!_.isEmpty(defulat.gatheringCodeStorageId))(
             <Col span={6}>
@@ -332,22 +306,6 @@ console.log(noBounty)
             null,
           )}
         </Row>
-        {helpers.isJudge(['wechatMobile'].includes(defulat.gatheringChannelCode))(
-          <Descriptions size={'small'} column={4} layout="vertical" bordered>
-            <Descriptions.Item label="微信手机转账信息">
-              {defulat.mobile}/{defulat.realName}
-            </Descriptions.Item>
-          </Descriptions>,
-          null,
-        )}
-        {helpers.isJudge(['alipayIdTransfer'].includes(defulat.gatheringChannelCode))(
-          <Descriptions size={'small'} column={4} layout="vertical" bordered>
-            <Descriptions.Item label="支付宝id转账信息">
-              {defulat.account}/{defulat.alipayId}
-            </Descriptions.Item>
-          </Descriptions>,
-          null,
-        )}
         <Divider />
         {/* <div style={{ textAlign: 'center' }}>
           {helpers.isJudge(defulat.orderState == '4')(

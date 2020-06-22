@@ -322,7 +322,6 @@ console.log(noBounty)
                   style={{ width: '100%' }}
                   src={`api/storage/fetch/${defulat.gatheringCodeStorageId}`}
                 />
-                ,
                 {/* {helpers.isJudge(
                 defulat.gatheringCodeStorageId == 'alipayIdTransfer' &&
                   !_.isEmpty(defulat.alipayId),
@@ -332,7 +331,7 @@ console.log(noBounty)
             null,
           )}
         </Row>
-        {helpers.isJudge(['wechatMobile'].includes(defulat.gatheringChannelCode))(
+        {/* {helpers.isJudge(['wechatMobile'].includes(defulat.gatheringChannelCode))(
           <Descriptions size={'small'} column={4} layout="vertical" bordered>
             <Descriptions.Item label="微信手机转账信息">
               {defulat.mobile}/{defulat.realName}
@@ -347,7 +346,7 @@ console.log(noBounty)
             </Descriptions.Item>
           </Descriptions>,
           null,
-        )}
+        )} */}
         <Divider />
         {/* <div style={{ textAlign: 'center' }}>
           {helpers.isJudge(defulat.orderState == '4')(

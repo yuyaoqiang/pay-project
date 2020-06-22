@@ -54,11 +54,11 @@ const InfoComponent: React.FC<ModalFormProps> = props => {
             {defulat.googleAuthBindTime != null ? defulat.googleAuthBindTime : ''}
           </Col>
         </Row>
-        <div style={{textAlign:'center',paddingTop:15}}>
+        {/* <div style={{textAlign:'center',paddingTop:15}}>
           <Button type={'primary'} loading={confirmLoading} onClick={onClick}>
             重置谷歌验证码
           </Button>
-        </div>
+        </div> */}
       </Card>
     </Modal>
   );

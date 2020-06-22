@@ -36,6 +36,12 @@ const MerchantOrder = props => {
       hideInTable: true,
     },
     {
+      title: '商户订单号',
+      dataIndex: 'orderNo',
+      align: 'center',
+      hideInTable: true,
+    },
+    {
       title: '订单号/商户/商户订单号',
       ellipsis: true,
       align: 'center',
@@ -98,7 +104,7 @@ const MerchantOrder = props => {
           { name: '全部', type: 'all' },
           ...list.map(m => {
             return {
-              type: m.channelCode,
+              type: m.id,
               name: m.channelName,
             };
           }),
@@ -186,6 +192,13 @@ const MerchantOrder = props => {
     });
   };
   const getDatas = params => {
+    if (!params.dateRange) {
+      params.submitStartTime = moment().format(constant.YYYY_MM_DD);
+      params.submitEndTime = moment().format(constant.YYYY_MM_DD);
+    } else {
+      params.submitStartTime = moment(params.dateRange[0]).format(constant.YYYY_MM_DD);
+      params.submitEndTime = moment(params.dateRange[1]).format(constant.YYYY_MM_DD);
+    }
     return dispatch({
       type: 'levelMerchantOrder/list',
       payload: { params },

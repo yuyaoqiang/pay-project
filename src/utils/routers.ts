@@ -1,23 +1,23 @@
 export default [
-  {
-    id: 10,
-    path: 'dashboard',
-    name: '仪表盘',
-    children: [
-      {
-        id: 1001,
-        path: 'dashboard',
-        name: '仪表盘',
-        meta: {
-          title: '仪表盘',
-          icon: 'dashboard',
-          noCache: true,
-          affix: true,
-        },
-        hideInMenu: true,
-      },
-    ],
-  },
+  // {
+  //   id: 10,
+  //   path: 'dashboard',
+  //   name: '仪表盘',
+  //   children: [
+  //     {
+  //       id: 1001,
+  //       path: 'dashboard',
+  //       name: '仪表盘',
+  //       meta: {
+  //         title: '仪表盘',
+  //         icon: 'dashboard',
+  //         noCache: true,
+  //         affix: true,
+  //       },
+  //       hideInMenu: true,
+  //     },
+  //   ],
+  // },
   {
     path: 'merchanStatistics',
     name: '统计分析',

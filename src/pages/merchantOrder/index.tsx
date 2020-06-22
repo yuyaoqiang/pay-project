@@ -55,17 +55,7 @@ const MerchantOrder = props => {
               handleInfoModalVisible(true);
             }}
           >
-            <div
-              onClick={e => {
-                e.stopPropagation();
-                e.nativeEvent.stopImmediatePropagation();
-              }}
-            >
-              <Popover content={rcord.orderNo} title="订单号">
-                <p className={styles.mg0}>{rcord.orderNo}</p>
-              </Popover>
-            </div>
-
+            <p className={styles.mg0}>{rcord.orderNo}</p>
             <p className={styles.mg0}>{rcord.payInfo && rcord.payInfo.orderNo}</p>
           </a>
         );
@@ -384,9 +374,6 @@ const MerchantOrder = props => {
               defaultPageSize: 20,
               position: 'bottom',
               showTotal: (total, range) => `共${total}条记录`,
-            }}
-            footer={() => {
-              return <Card>{`已支付总计：${data.statistics || 0}元`}</Card>;
             }}
           />
         </Spin>

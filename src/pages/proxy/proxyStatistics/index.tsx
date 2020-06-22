@@ -20,7 +20,7 @@ const ProxyStatistics = props => {
   };
   const columns: ProColumns<TableListItem>[] = [
     {
-      title: '通道名称',
+      title: '商户名称',
       dataIndex: 'merchantName',
       align: 'center',
       hideInSearch: true,
@@ -51,6 +51,27 @@ const ProxyStatistics = props => {
       dataIndex: 'manualAmount',
       align: 'center',
       hideInSearch: true,
+    },
+    {
+      title: '已支付订单量',
+      dataIndex: 'paidOrderNum',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '订单量',
+      dataIndex: 'orderNum',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '成功率',
+      dataIndex: 'successRate',
+      align: 'center',
+      hideInSearch: true,
+      render: (item, row) => {
+        return item + '%';
+      },
     },
     {
       title: '日期',

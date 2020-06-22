@@ -11,7 +11,14 @@ const status = [
   { name: '启用', type: '1' },
   { name: '禁用', type: '0' },
 ];
-
+const defulatItemLayout_1 = {
+  labelCol: {
+    span: 6,
+  },
+  wrapperCol: {
+    span: 16,
+  },
+};
 const AddUpDataComponent: React.FC<ModalFormProps> = props => {
   const { modalVisible, form, onSubmit, onCancel } = props;
   const { confirmLoading, defulat = {}, common, allMerchantAgent, dispatch } = props;
@@ -171,9 +178,11 @@ const AddUpDataComponent: React.FC<ModalFormProps> = props => {
           <Row gutter={[8, 8]}>{generateCols(updateRenderItems.row_1, 12)}</Row>
           <Row gutter={[8, 8]}>{generateCols(updateRenderItems.row_2, 12)}</Row>
           <Row gutter={[8, 8]}>
-            <Col key={`row99`} span={24}>
-              <GenerateFormCompoents formItems={commodRenderItems.row_5} form={form} />
-              <Button>生成秘钥</Button>
+            <Col key={`row99`} span={12}>
+              <GenerateFormCompoents formItems={commodRenderItems.row_5} form={form}  itemLayout={defulatItemLayout_1} />
+            </Col>
+            <Col key={`row999`} span={12}>
+            <Button loading={confirmLoading} onClick={()=>{generateSecretKey()}}>生成秘钥</Button>
             </Col>
           </Row>
           <Row gutter={[8, 8]}>{generateCols(commodRenderItems.row_3, 24)}</Row>
@@ -183,9 +192,11 @@ const AddUpDataComponent: React.FC<ModalFormProps> = props => {
           <Row gutter={[8, 8]}>{generateCols(addRenderItems.row_1, 12)}</Row>
           <Row gutter={[8, 8]}>{generateCols(addRenderItems.row_2, 12)}</Row>
           <Row gutter={[8, 8]}>
-            <Col key={`row99`} span={24}>
-              <GenerateFormCompoents formItems={commodRenderItems.row_5} form={form} />
-              <Button onClick={()=>{generateSecretKey()}}>生成秘钥</Button>
+            <Col key={`row99`} span={12}>
+              <GenerateFormCompoents formItems={commodRenderItems.row_5} form={form}  itemLayout={defulatItemLayout_1} />
+            </Col>
+            <Col key={`row999`} span={12}>
+            <Button loading={confirmLoading} onClick={()=>{generateSecretKey()}}>生成秘钥</Button>
             </Col>
           </Row>
           <Row gutter={[8, 8]}>{generateCols(commodRenderItems.row_3, 24)}</Row>
